@@ -1,487 +1,420 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo | Barbearia Santos</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #0d0d0f;
-            --card-bg: #16161a;
-            --card-secondary: #1f1f24;
-            --input-bg: #19191e;
-            --border-color: #2a2a32;
-            --accent-gold: #c9a227;
-            --accent-gold-hover: #e5b82e;
-            --text-primary: #f3f3f6;
-            --text-secondary: #9a9ab0;
-            --success-color: #2ecc71;
-            --error-color: #e74c3c;
-            --info-color: #3498db;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 30px 20px;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.06) 0%, transparent 60%);
-        }
-
-        .container {
-            max-width: 1150px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            border-radius: 16px 16px 0 0;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 18px;
-        }
-
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        h2, h3 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--accent-gold);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        h2 { font-size: 17px; margin-bottom: 14px; }
-        h3 { font-size: 15px; margin-bottom: 12px; }
-
-        .nav-link {
-            color: var(--accent-gold);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-            transition: color 0.2s;
-        }
-        .nav-link:hover { color: var(--accent-gold-hover); }
-
-        /* Cards Financeiros */
-        .cards-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .card {
-            background: var(--card-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-        }
-        .card:hover { transform: translateY(-2px); }
-
-        .card-title {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-        }
-
-        .card-value {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 28px;
-            color: var(--success-color);
-            font-weight: 800;
-            margin-top: 6px;
-        }
-        .card-value-blue { color: var(--info-color); }
-
-        /* Barra de Filtro */
-        .filter-bar {
-            background: var(--card-secondary);
-            border: 1px solid var(--border-color);
-            padding: 14px 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-
-        .filter-bar label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-bar input[type="date"] {
-            padding: 10px 14px;
-            background: var(--input-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .filter-bar input[type="date"]:focus {
-            border-color: var(--accent-gold);
-        }
-
-        .btn-filter {
-            background: linear-gradient(135deg, var(--accent-gold), #b38d1d);
-            color: #0d0d0f;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-filter:hover {
-            background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
-            transform: translateY(-1px);
-        }
-
-        .btn-clear {
-            color: var(--error-color);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 28px;
-        }
-
-        @media (max-width: 900px) {
-            .grid-layout { grid-template-columns: 1fr; }
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            background: var(--card-secondary);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        th, td {
-            padding: 12px 14px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-        }
-
-        th {
-            background-color: #1a1a20;
-            color: var(--accent-gold);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 700;
-        }
-
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background-color: #24242c; }
-
-        .status-confirmado {
-            color: var(--success-color);
-            font-weight: 600;
-            background: rgba(46, 204, 113, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-
-        .status-cancelado {
-            color: var(--error-color);
-            font-weight: 600;
-            background: rgba(231, 76, 60, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-
-        .btn-cancelar, .btn-deletar {
-            background: rgba(231, 76, 60, 0.15);
-            color: var(--error-color);
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .btn-cancelar:hover, .btn-deletar:hover {
-            background: var(--error-color);
-            color: #fff;
-        }
-
-        .card-form {
-            background: var(--card-secondary);
-            padding: 22px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        label {
-            display: block;
-            margin-top: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-        }
-
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            margin-top: 4px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: var(--input-bg);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            outline: none;
-        }
-
-        input:focus { border-color: var(--accent-gold); }
-
-        button.btn-adicionar {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-gold), #b38d1d);
-            color: #0d0d0f;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            border: none;
-            padding: 12px;
-            margin-top: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        button.btn-adicionar:hover {
-            background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
-            transform: translateY(-1px);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo | Barbearia Santos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Painel Administrativo</h1>
-            <div>
-                <a href="/" class="nav-link" style="margin-right: 18px;">← Agendamento</a>
-                <a href="/logout" class="nav-link" style="color: var(--error-color);">Sair</a>
-            </div>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- TOPO -->
+  <header class="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-orange-500 text-zinc-950 flex items-center justify-center font-black shadow-lg shadow-orange-500/20">
+          ✂
         </div>
-
-        <!-- Dashboard Financeiro -->
-        <div class="cards-summary">
-            <div class="card">
-                <span class="card-title">Faturamento Estimado {% if data_filtro %}(do dia){% else %}(total){% endif %}</span>
-                <span class="card-value">R$ {{ "%.2f"|format(total_faturado) }}</span>
-            </div>
-            <div class="card">
-                <span class="card-title">Cortes Confirmados</span>
-                <span class="card-value card-value-blue">{{ total_atendimentos }}</span>
-            </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg tracking-tight leading-none">
+            Barbearia <span class="text-orange-500">Santos</span>
+          </h1>
+          <span class="text-[11px] text-zinc-400">Gestão Administrativa</span>
         </div>
+      </div>
 
-        <!-- Filtro por Data -->
-        <form method="GET" action="/admin" class="filter-bar">
-            <label for="data">Filtrar por Data:</label>
-            <input type="date" id="data" name="data" value="{{ data_filtro }}">
-            <button type="submit" class="btn-filter">Filtrar</button>
-            {% if data_filtro %}
-            <a href="/admin" class="btn-clear">✖ Limpar Filtro</a>
-            {% endif %}
-        </form>
+      <div class="flex items-center gap-2">
+        <a
+          href="{{ url_for('main.exportar_csv', data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}"
+          class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-orange-400 border border-orange-500/30 text-xs font-bold transition"
+        >
+          ↓ Exportar CSV
+        </a>
+        <a
+          href="{{ url_for('main.index') }}"
+          class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-medium text-zinc-300 transition"
+        >
+          Voltar ao Site
+        </a>
+        <a
+          href="{{ url_for('main.logout') }}"
+          class="px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-semibold transition"
+        >
+          Sair
+        </a>
+      </div>
+    </div>
+  </header>
 
-        <div class="grid-layout">
-            <div>
-                <h2>Agendamentos Registrados</h2>
-                {% if agendamentos %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Telefone</th>
-                            <th>Serviço</th>
-                            <th>Data/Hora</th>
-                            <th>Status</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for a in agendamentos %}
-                        <tr>
-                            <td>{{ a.cliente.nome }}</td>
-                            <td>{{ a.cliente.telefone }}</td>
-                            <td>{{ a.servico.nome }} (R$ {{ "%.2f"|format(a.servico.preco) }})</td>
-                            <td>{{ a.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
-                            <td><span class="status-{{ a.status.lower() }}">{{ a.status }}</span></td>
-                            <td>
-                                {% if a.status != 'Cancelado' %}
-                                <button class="btn-cancelar" onclick="cancelarAgendamento({{ a.id }})">Cancelar</button>
-                                {% else %}-{% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <p style="color: var(--text-secondary); margin-top: 10px;">Nenhum agendamento encontrado para este período.</p>
-                {% endif %}
-            </div>
+  <main class="max-w-6xl mx-auto p-4 sm:py-8 space-y-6">
 
-            <div>
-                <div class="card-form">
-                    <h3>➕ Adicionar Novo Serviço</h3>
-                    <form id="formNovoServico">
-                        <label for="nome_servico">Nome do Serviço:</label>
-                        <input type="text" id="nome_servico" required placeholder="Ex: Cabelo + Barba + Sobrancelha">
+    <!-- BARRA DE FILTROS RÁPIDOS -->
+    <form method="GET" class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-5 gap-3 items-end">
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">De</label>
+        <input
+          type="date"
+          name="data_inicio"
+          value="{{ filtros.data_inicio }}"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-orange-500"
+        />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Até</label>
+        <input
+          type="date"
+          name="data_fim"
+          value="{{ filtros.data_fim }}"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-orange-500"
+        />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Barbeiro</label>
+        <select
+          name="barbeiro"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-orange-500"
+        >
+          <option value="">Todos os profissionais</option>
+          {% for b in barbeiros %}
+          <option value="{{ b }}" {{ 'selected' if filtros.barbeiro == b else '' }}>{{ b }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Status</label>
+        <select
+          name="status"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-orange-500"
+        >
+          <option value="">Todos os status</option>
+          <option value="confirmed" {{ 'selected' if filtros.status == 'confirmed' else '' }}>Confirmado</option>
+          <option value="completed" {{ 'selected' if filtros.status == 'completed' else '' }}>Concluído</option>
+          <option value="cancelled" {{ 'selected' if filtros.status == 'cancelled' else '' }}>Cancelado</option>
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <button
+          type="submit"
+          class="flex-1 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-md shadow-orange-500/20"
+        >
+          Aplicar
+        </button>
+        <a
+          href="{{ url_for('main.admin') }}"
+          class="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-300 flex items-center transition"
+        >
+          Limpar
+        </a>
+      </div>
+    </form>
 
-                        <label for="preco_servico">Preço (R$):</label>
-                        <input type="number" step="0.01" id="preco_servico" required placeholder="Ex: 50.00">
+    <!-- KPIS FINANCEIROS -->
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div class="p-5 rounded-2xl bg-zinc-900 border border-orange-500/40 relative overflow-hidden">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-orange-400">Faturamento Bruto</span>
+        <p class="text-2xl sm:text-3xl font-black text-white mt-1.5">
+          R$ {{ "%.2f"|format(faturamento_bruto)|replace(".", ",") }}
+        </p>
+        <span class="text-xs text-zinc-400 mt-1 block">Atendimentos ativos</span>
+      </div>
 
-                        <label for="duracao_servico">Duração (minutos):</label>
-                        <input type="number" id="duracao_servico" required placeholder="Ex: 40">
+      <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Total Recebido</span>
+        <p class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1.5">
+          R$ {{ "%.2f"|format(recebido)|replace(".", ",") }}
+        </p>
+        <span class="text-xs text-zinc-400 mt-1 block">Serviços concluídos</span>
+      </div>
 
-                        <button type="submit" class="btn-adicionar">Cadastrar Serviço</button>
-                    </form>
-                </div>
+      <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">A Receber</span>
+        <p class="text-2xl sm:text-3xl font-black text-sky-400 mt-1.5">
+          R$ {{ "%.2f"|format(a_receber)|replace(".", ",") }}
+        </p>
+        <span class="text-xs text-zinc-400 mt-1 block">Agendamentos confirmados</span>
+      </div>
 
-                <h3 style="margin-top: 28px;">Serviços Ativos</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Preço</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for s in servicos %}
-                        <tr>
-                            <td>{{ s.nome }}</td>
-                            <td>R$ {{ "%.2f"|format(s.preco) }}</td>
-                            <td>
-                                <button class="btn-deletar" onclick="deletarServico({{ s.id }})">Excluir</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Reservas no Período</span>
+        <p class="text-2xl sm:text-3xl font-black text-orange-500 mt-1.5">
+          {{ agendamentos|length }}
+        </p>
+        <span class="text-xs text-zinc-400 mt-1 block">Registros filtrados</span>
+      </div>
     </div>
 
-    <script>
-        async function cancelarAgendamento(id) {
-            if (confirm('Deseja realmente cancelar este agendamento?')) {
-                const res = await fetch(`/admin/cancelar/${id}`, { method: 'POST' });
-                if (res.ok) window.location.reload();
-                else alert('Erro ao cancelar agendamento.');
-            }
-        }
+    <!-- NAVEGAÇÃO POR ABAS -->
+    <div class="flex flex-wrap gap-2 border-b border-zinc-800 pb-3">
+      <button
+        type="button"
+        onclick="trocarAba('agenda')"
+        id="tab-btn-agenda"
+        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 text-white transition"
+      >
+        Agenda de Clientes ({{ agendamentos|length }})
+      </button>
+      <button
+        type="button"
+        onclick="trocarAba('equipe')"
+        id="tab-btn-equipe"
+        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 transition"
+      >
+        Desempenho & Comissões
+      </button>
+      <button
+        type="button"
+        onclick="trocarAba('servicos')"
+        id="tab-btn-servicos"
+        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 transition"
+      >
+        Catálogo de Serviços ({{ servicos|length }})
+      </button>
+    </div>
 
-        document.getElementById('formNovoServico').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                nome: document.getElementById('nome_servico').value,
-                preco: document.getElementById('preco_servico').value,
-                duracao: document.getElementById('duracao_servico').value
-            };
+    <!-- ABA 1: AGENDA DE CLIENTES -->
+    <section id="aba-agenda" class="aba-conteudo bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-bold text-lg text-white">Controle de Horários</h2>
+        <span class="text-xs text-zinc-400">Altere o status para atualizar o caixa automaticamente</span>
+      </div>
 
-            const res = await fetch('/admin/servico/novo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+      {% if agendamentos %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-[11px] uppercase tracking-wider text-zinc-400 border-b border-zinc-800">
+            <tr>
+              <th class="py-3">Horário</th>
+              <th class="py-3">Cliente</th>
+              <th class="py-3">Serviço</th>
+              <th class="py-3">Profissional</th>
+              <th class="py-3">Valor</th>
+              <th class="py-3 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-800/70">
+            {% for a in agendamentos %}
+            <tr class="hover:bg-zinc-950/60 transition">
+              <td class="py-3.5 whitespace-nowrap">
+                <span class="px-2.5 py-1 rounded-lg bg-orange-500/15 text-orange-400 font-bold text-xs border border-orange-500/30">
+                  {{ a.horario }}
+                </span>
+                <span class="block text-xs text-zinc-400 mt-1">{{ a.data.split("-")|reverse|join("/") }}</span>
+              </td>
+              <td class="py-3.5">
+                <span class="font-bold text-white">{{ a.cliente_nome }}</span>
+                <span class="block text-xs text-zinc-400">{{ a.cliente_telefone }}</span>
+              </td>
+              <td class="py-3.5 text-zinc-200">{{ a.servico_nome }}</td>
+              <td class="py-3.5">
+                <span class="inline-flex items-center gap-1.5 font-semibold text-zinc-200">
+                  <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                  {{ a.barbeiro }}
+                </span>
+              </td>
+              <td class="py-3.5 font-bold text-white">R$ {{ "%.2f"|format(a.valor)|replace(".", ",") }}</td>
+              <td class="py-3.5 text-right">
+                <form method="POST" action="{{ url_for('main.atualizar_status_agendamento', agendamento_id=a.id) }}" class="inline-block">
+                  <select
+                    name="status"
+                    onchange="this.form.submit()"
+                    class="rounded-xl bg-zinc-950 border px-3 py-1.5 text-xs font-bold outline-none cursor-pointer
+                    {{ 'border-orange-500/50 text-orange-400' if a.status == 'confirmed' else ('border-emerald-500/50 text-emerald-400' if a.status == 'completed' else 'border-red-500/50 text-red-400') }}"
+                  >
+                    <option value="confirmed" {{ 'selected' if a.status == 'confirmed' else '' }}>Confirmado</option>
+                    <option value="completed" {{ 'selected' if a.status == 'completed' else '' }}>Concluído</option>
+                    <option value="cancelled" {{ 'selected' if a.status == 'cancelled' else '' }}>Cancelado</option>
+                  </select>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="text-center py-10 space-y-1">
+        <p class="text-sm font-semibold text-zinc-300">Nenhum agendamento encontrado</p>
+        <p class="text-xs text-zinc-500">Ajuste os filtros acima para visualizar outros períodos.</p>
+      </div>
+      {% endif %}
+    </section>
 
-            const data = await res.json();
-            if (res.ok) {
-                window.location.reload();
-            } else {
-                alert(data.erro || 'Erro ao cadastrar serviço.');
-            }
-        });
+    <!-- ABA 2: DESEMPENHO POR BARBEIRO & SIMULADOR DE COMISSÃO -->
+    <section id="aba-equipe" class="aba-conteudo hidden bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="font-bold text-lg text-white">Ranking & Simulador de Repasse</h2>
+          <p class="text-xs text-zinc-400">Cálculo automático sobre os atendimentos não cancelados</p>
+        </div>
 
-        async function deletarServico(id) {
-            if (confirm('Deseja remover este serviço?')) {
-                const res = await fetch(`/admin/servico/deletar/${id}`, { method: 'POST' });
-                const data = await res.json();
-                if (res.ok) {
-                    window.location.reload();
-                } else {
-                    alert(data.erro || 'Erro ao deletar serviço.');
-                }
-            }
-        }
-    </script>
+        <div class="flex items-center gap-1.5 bg-zinc-950 p-1.5 rounded-xl border border-zinc-800">
+          <span class="text-xs text-zinc-400 px-2">Repasse:</span>
+          <button type="button" onclick="definirTaxa(0.5, this)" class="btn-taxa px-3 py-1 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition">50%</button>
+          <button type="button" onclick="definirTaxa(0.6, this)" class="btn-taxa px-3 py-1 rounded-lg text-xs font-bold bg-orange-500 text-white transition">60%</button>
+          <button type="button" onclick="definirTaxa(0.7, this)" class="btn-taxa px-3 py-1 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition">70%</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for rb in resumo_barbeiros %}
+        {% set percentual = ((rb.faturamento / faturamento_bruto) * 100) if faturamento_bruto > 0 else 0 %}
+        <div class="card-barbeiro p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-4" data-bruto="{{ rb.faturamento }}">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-500 font-black text-lg flex items-center justify-center">
+                {{ rb.nome[0] }}
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">{{ rb.nome }}</h3>
+                <span class="text-xs text-zinc-400">{{ rb.atendimentos }} atendimento(s)</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-zinc-500 block">Bruto gerado</span>
+              <span class="text-lg font-black text-white">R$ {{ "%.2f"|format(rb.faturamento)|replace(".", ",") }}</span>
+            </div>
+          </div>
+
+          <div class="w-full h-2 rounded-full bg-zinc-900 overflow-hidden">
+            <div class="h-full bg-orange-500 rounded-full" style="width: {{ '%.0f'|format(percentual) }}%"></div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-1 border-t border-zinc-900 text-xs">
+            <div>
+              <span class="text-zinc-500 block">Comissão Barbeiro</span>
+              <span class="text-sm font-bold text-orange-400 cel-repasse"></span>
+            </div>
+            <div class="text-right">
+              <span class="text-zinc-500 block">Caixa Barbearia</span>
+              <span class="text-sm font-bold text-emerald-400 cel-liquido"></span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ABA 3: CATÁLOGO DE SERVIÇOS -->
+    <section id="aba-servicos" class="aba-conteudo hidden bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-5">
+      <div>
+        <h2 class="font-bold text-lg text-white">Gerenciar Serviços</h2>
+        <p class="text-xs text-zinc-400">Adicione novos serviços ou ative/desative opções na página de agendamento</p>
+      </div>
+
+      <form method="POST" action="{{ url_for('main.novo_servico') }}" class="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 grid grid-cols-1 sm:grid-cols-6 gap-3 items-center">
+        <input
+          type="text"
+          name="nome"
+          placeholder="Nome (ex: Corte Degradê)"
+          required
+          class="rounded-xl bg-zinc-900 border border-zinc-700 px-3 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <input
+          type="number"
+          step="0.01"
+          name="preco"
+          placeholder="Preço (R$)"
+          required
+          class="rounded-xl bg-zinc-900 border border-zinc-700 px-3 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <input
+          type="number"
+          name="duracao_min"
+          placeholder="Minutos"
+          value="30"
+          class="rounded-xl bg-zinc-900 border border-zinc-700 px-3 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <input
+          type="text"
+          name="descricao"
+          placeholder="Descrição curta"
+          class="rounded-xl bg-zinc-900 border border-zinc-700 px-3 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <label class="flex items-center gap-2 text-xs text-zinc-300 px-2 cursor-pointer select-none">
+          <input type="checkbox" name="destaque" value="1" class="rounded accent-orange-500 w-4 h-4" />
+          Card Destaque
+        </label>
+        <button
+          type="submit"
+          class="rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm py-2.5 px-4 transition"
+        >
+          + Salvar
+        </button>
+      </form>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {% for s in servicos %}
+        <div class="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-sm {{ 'text-white' if s.ativo else 'line-through text-zinc-500' }}">{{ s.nome }}</span>
+              {% if s.destaque %}
+              <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                Destaque
+              </span>
+              {% endif %}
+            </div>
+            <p class="text-xs text-zinc-400 mt-0.5">
+              <span class="text-orange-400 font-bold">R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}</span> • {{ s.duracao_min }} min
+            </p>
+          </div>
+          <form method="POST" action="{{ url_for('main.toggle_servico', servico_id=s.id) }}">
+            <button
+              type="submit"
+              class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition {{ 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700' if s.ativo else 'bg-orange-500 hover:bg-orange-600 text-white' }}"
+            >
+              {{ 'Desativar' if s.ativo else 'Ativar' }}
+            </button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let taxaAtual = 0.6;
+
+    function formatBRL(v) {
+      return "R$ " + v.toFixed(2).replace(".", ",");
+    }
+
+    function trocarAba(nome) {
+      document.querySelectorAll(".aba-conteudo").forEach(el => el.classList.add("hidden"));
+      document.getElementById("aba-" + nome).classList.remove("hidden");
+
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("bg-orange-500", "text-white");
+        btn.classList.add("bg-zinc-900", "text-zinc-400", "border", "border-zinc-800");
+      });
+      const ativo = document.getElementById("tab-btn-" + nome);
+      ativo.classList.remove("bg-zinc-900", "text-zinc-400", "border", "border-zinc-800");
+      ativo.classList.add("bg-orange-500", "text-white");
+    }
+
+    function definirTaxa(taxa, botao) {
+      taxaAtual = taxa;
+      document.querySelectorAll(".btn-taxa").forEach(b => {
+        b.classList.remove("bg-orange-500", "text-white");
+        b.classList.add("text-zinc-400");
+      });
+      botao.classList.remove("text-zinc-400");
+      botao.classList.add("bg-orange-500", "text-white");
+      recalcularComissao();
+    }
+
+    function recalcularComissao() {
+      document.querySelectorAll(".card-barbeiro").forEach(card => {
+        const bruto = parseFloat(card.dataset.bruto || 0);
+        const repasse = bruto * taxaAtual;
+        const liquido = bruto - repasse;
+        card.querySelector(".cel-repasse").textContent = formatBRL(repasse);
+        card.querySelector(".cel-liquido").textContent = formatBRL(liquido);
+      });
+    }
+
+    recalcularComissao();
+  </script>
 </body>
 </html>
