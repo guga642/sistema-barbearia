@@ -1,335 +1,500 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbearia Santos | Agendamento Premium</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #0d0d0f;
-            --card-bg: #16161a;
-            --input-bg: #1f1f24;
-            --border-color: #2a2a32;
-            --accent-gold: #c9a227;
-            --accent-gold-hover: #e5b82e;
-            --text-primary: #f3f3f6;
-            --text-secondary: #9a9ab0;
-            --success-color: #2ecc71;
-            --error-color: #e74c3c;
-            --whatsapp-color: #25d366;
-            --whatsapp-hover: #1ebd56;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 16px;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.08) 0%, transparent 70%),
-                radial-gradient(circle at 50% 100%, rgba(22, 22, 26, 0.5) 0%, transparent 50%);
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 460px;
-            padding: 36px 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-        }
-
-        .brand-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .brand-logo {
-            width: 56px;
-            height: 56px;
-            margin: 0 auto 12px;
-            background: rgba(201, 162, 39, 0.1);
-            border: 1px solid var(--accent-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-gold);
-        }
-
-        .brand-logo svg {
-            width: 28px;
-            height: 28px;
-            fill: currentColor;
-        }
-
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--text-primary);
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.25s ease;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
-            background-color: #24242b;
-        }
-
-        select option {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 16px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, var(--accent-gold), #b38d1d);
-            border: none;
-            border-radius: 10px;
-            color: #0d0d0f;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(201, 162, 39, 0.25);
-        }
-
-        button[type="submit"]:hover {
-            background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.35);
-        }
-
-        button[type="submit"]:active {
-            transform: translateY(0);
-        }
-
-        #mensagem {
-            margin-top: 18px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            text-align: center;
-            display: none;
-        }
-
-        #mensagem.sucesso {
-            display: block;
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            color: var(--success-color);
-        }
-
-        #mensagem.erro {
-            display: block;
-            background: rgba(231, 76, 60, 0.1);
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            color: var(--error-color);
-        }
-
-        .btn-whatsapp {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 14px;
-            padding: 14px;
-            background-color: var(--whatsapp-color);
-            border-radius: 10px;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 14px;
-            text-decoration: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
-        }
-
-        .btn-whatsapp:hover {
-            background-color: var(--whatsapp-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-        }
-
-        .footer-info {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border-color);
-            padding-top: 16px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barbearia Santos | Cortes Clássicos e Modernos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="card">
-        <div class="brand-header">
-            <div class="brand-logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19.5,4.5L16.5,7.5L15,6L18,3L19.5,4.5M6.5,4.5L9.5,7.5L11,6L8,3L6.5,4.5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4Z"/>
-                </svg>
-            </div>
-            <h1>Barbearia Santos</h1>
-            <p class="subtitle">Agende seu horário com nossos especialistas</p>
+<body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-orange-500 selection:text-white">
+
+<!-- HEADER / NAVBAR -->
+  <header class="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80">
+    <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <!-- SEU LOGO REDONDINHO -->
+        <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-orange-500/50 group-hover:border-orange-500 transition shadow-md shadow-orange-500/10">
+          <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo Barbearia Santos" class="w-full h-full object-cover">
         </div>
+        <!-- NOME COM TIPOGRAFIA PREMIUM -->
+        <div class="flex flex-col">
+          <span class="font-serif tracking-widest text-lg text-white font-bold uppercase leading-none">
+            Barbearia
+          </span>
+          <span class="text-orange-500 font-black tracking-wider text-xl uppercase leading-none mt-1">
+            Santos
+          </span>
+        </div>
+      </a>
 
-        <form id="formAgendamento">
-            <div class="form-group">
-                <label for="nome">Nome Completo</label>
-                <input type="text" id="nome" required placeholder="Digite seu nome">
-            </div>
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
+        <a href="#servicos" class="hover:text-orange-400 transition">Serviços</a>
+        <a href="#sobre" class="hover:text-orange-400 transition">Sobre Nós</a>
+        <a href="#contato" class="hover:text-orange-400 transition">Contato</a>
+      </nav>
 
-            <div class="form-group">
-                <label for="telefone">WhatsApp / Celular</label>
-                <input type="tel" id="telefone" required placeholder="(61) 99999-9999">
-            </div>
-
-            <div class="form-group">
-                <label for="servico">Serviço Desejado</label>
-                <select id="servico" required>
-                    <option value="">Selecione um serviço...</option>
-                    {% for s in servicos %}
-                        <option value="{{ s.id }}" data-nome="{{ s.nome }}">{{ s.nome }} — R$ {{ "%.2f"|format(s.preco) }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="data_hora">Data e Horário</label>
-                <input type="datetime-local" id="data_hora" required>
-            </div>
-
-            <button type="submit">Confirmar Agendamento</button>
-        </form>
-        
-        <div id="mensagem"></div>
-        <a id="btnWhatsapp" class="btn-whatsapp" target="_blank">
-            <span>📲 Confirmar via WhatsApp</span>
+      <div class="flex items-center gap-2">
+        <button onclick="abrirModalMeusAgendamentos()" class="px-3.5 py-2 text-xs sm:text-sm font-medium rounded-xl border border-zinc-700 hover:border-orange-500 text-zinc-200 transition">
+          Meus Agendamentos
+        </button>
+        <a href="{{ url_for('main.login') }}" class="px-3 py-2 text-xs sm:text-sm rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-orange-400 border border-zinc-800 transition">
+          Admin
         </a>
+      </div>
+    </div>
+  </header>
 
-        <div class="footer-info">
-            📍 Atendimento de Segunda a Sábado | 08h às 20h
-        </div>
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden py-20 sm:py-28 px-4 border-b border-zinc-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/15 via-zinc-950 to-zinc-950">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
+        ★ Estilo, Precisão & Tradição
+      </span>
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
+        Seu visual em dia, <span class="text-orange-500">sem espera na cadeira.</span>
+      </h1>
+      <p class="text-zinc-400 max-w-2xl mx-auto text-base sm:text-lg">
+        Agende online em menos de 1 minuto com nossos especialistas, escolha seu horário preferido e receba a confirmação direto no WhatsApp.
+      </p>
+      <div class="pt-3 flex flex-col sm:flex-row gap-3 justify-center">
+        <button onclick="abrirModalAgendamento()" class="px-8 py-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-base transition shadow-lg shadow-orange-500/25">
+          Agendar Horário
+        </button>
+        <a href="#servicos" class="px-8 py-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-semibold border border-zinc-800 transition">
+          Conhecer Serviços
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VITRINE DE SERVIÇOS -->
+  <section id="servicos" class="py-16 sm:py-20 px-4 max-w-6xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Tabela de Preços</span>
+        <h2 class="text-3xl font-extrabold mt-1">Nossos Serviços</h2>
+      </div>
+      <p class="text-zinc-400 text-sm">Clique em reservar para escolher o barbeiro e o horário.</p>
     </div>
 
-    <script>
-        document.getElementById('formAgendamento').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const servicoSelect = document.getElementById('servico');
-            const servicoId = servicoSelect.value;
-            const servicoNome = servicoSelect.options[servicoSelect.selectedIndex].getAttribute('data-nome');
-            const dataHora = document.getElementById('data_hora').value;
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for s in servicos %}
+      <div class="servico-card {{ 'hidden servico-extra' if loop.index > 3 else '' }} p-6 rounded-2xl bg-zinc-900/90 border {{ 'border-orange-500 ring-1 ring-orange-500/30 relative' if s.destaque else 'border-zinc-800' }} flex flex-col justify-between transition hover:border-orange-500/60">
+        {% if s.destaque %}
+        <span class="absolute -top-3 right-5 px-3 py-0.5 text-[11px] font-extrabold uppercase tracking-wider rounded-full bg-orange-500 text-zinc-950">
+          Destaque
+        </span>
+        {% endif %}
+        <div>
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-bold text-xl text-white">{{ s.nome }}</h3>
+            <span class="text-xs px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-300">{{ s.duracao_min }} min</span>
+          </div>
+          <p class="text-zinc-400 text-sm mt-3 leading-relaxed">{{ s.descricao }}</p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-zinc-500 block">Valor</span>
+            <span class="text-2xl font-black text-orange-400">R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}</span>
+          </div>
+          <button
+            onclick="abrirModalAgendamento({{ s.id }})"
+            class="px-5 py-2.5 rounded-xl {{ 'bg-orange-500 hover:bg-orange-600 text-white' if s.destaque else 'bg-zinc-800 hover:bg-orange-500 text-zinc-100 hover:text-white' }} text-sm font-bold transition">
+            Agendar
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-            const payload = {
-                nome: nome,
-                telefone: telefone,
-                servico_id: servicoId,
-                data_hora: dataHora
-            };
+    {% if servicos|length > 3 %}
+    <div class="mt-8 text-center">
+      <button id="btnExpandirServicos" onclick="alternarServicos()" class="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-sm font-semibold text-orange-400 transition">
+        Ver todos os serviços ({{ servicos|length }}) ↓
+      </button>
+    </div>
+    {% endif %}
+  </section>
 
-            const res = await fetch('/agendar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+  <!-- SOBRE NÓS E EQUIPE -->
+  <section id="sobre" class="py-16 sm:py-20 px-4 bg-zinc-900/50 border-y border-zinc-900">
+    <div class="max-w-6xl mx-auto space-y-16">
+      <!-- Diferenciais -->
+      <div>
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Sobre Nós</span>
+          <h2 class="text-3xl font-extrabold mt-1">Por que escolher a Barbearia Santos?</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">01</div>
+            <h3 class="font-bold text-lg text-white">Horário Pontual</h3>
+            <p class="text-sm text-zinc-400 mt-2">Sistema inteligente que evita choques de agenda e respeita o seu tempo.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">02</div>
+            <h3 class="font-bold text-lg text-white">Toalha Quente & Acabamento</h3>
+            <p class="text-sm text-zinc-400 mt-2">Ritual completo de barbearia tradicional aliado às técnicas modernas de degradê.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">03</div>
+            <h3 class="font-bold text-lg text-white">Ambiente Climatizado</h3>
+            <p class="text-sm text-zinc-400 mt-2">Espaço confortável, café cortesia e atendimento personalizado do início ao fim.</p>
+          </div>
+        </div>
+      </div>
 
-            const data = await res.json();
-            const msgDiv = document.getElementById('mensagem');
-            const btnWa = document.getElementById('btnWhatsapp');
+      <!-- Equipe -->
+      <div>
+        <h3 class="text-2xl font-bold mb-6">Nossa Equipe</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {% set especialidades = {'Lucas': 'Degradê & Navalhado', 'Carlos': 'Barba Terapia & Clássicos', 'Diego': 'Cortes Modernos & Tesoura', 'Mateus': 'Acabamento & Pigmentação'} %}
+          {% for b in barbeiros %}
+          <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-orange-500/50 transition text-center">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 font-black text-2xl flex items-center justify-center mb-3">
+              {{ b[0] }}
+            </div>
+            <h4 class="font-bold text-white text-base">{{ b }}</h4>
+            <p class="text-xs text-zinc-400 mt-1">{{ especialidades.get(b, 'Barbeiro Especialista') }}</p>
+            <button onclick="abrirModalAgendamento(null, '{{ b }}')" class="mt-4 w-full py-2 rounded-lg bg-zinc-900 hover:bg-orange-500 text-xs font-semibold text-zinc-300 hover:text-white transition">
+              Agendar com {{ b }}
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
 
-            if (res.ok) {
-                msgDiv.className = 'sucesso';
-                msgDiv.innerText = data.mensagem;
+  <!-- CONTATO -->
+  <section id="contato" class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="p-8 rounded-3xl bg-zinc-900 border border-zinc-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="space-y-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Onde Estamos</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Venha nos visitar</h2>
+        <p class="text-sm text-zinc-400">Segunda a Sábado • 09:00 às 19:30</p>
+        <p class="text-sm text-zinc-300">Rua Principal, Centro — Atendimento com hora marcada</p>
+      </div>
+      <div class="flex flex-wrap gap-3 w-full md:w-auto">
+        <a href="https://maps.google.com/?q=Barbearia+Santos" target="_blank" class="flex-1 md:flex-initial text-center px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm border border-zinc-700 transition">
+          Abrir no Google Maps
+        </a>
+        <a href="https://wa.me/{{ whatsapp_barbearia }}" target="_blank" class="flex-1 md:flex-initial text-center px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition">
+          Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
 
-                const dataObj = new Date(dataHora);
-                const dataFormatada = dataObj.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+  <!-- MODAL DE AGENDAMENTO -->
+  <div id="modalAgendamento" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-5 relative">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-lg font-bold text-white">Agendar <span class="text-orange-500">Horário</span></h3>
+        <button onclick="fecharModalAgendamento()" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+      </div>
 
-                const numeroBarbearia = '5561999999999';
-                const texto = `Olá! Realizei um agendamento na Barbearia Santos.\n\n👤 *Cliente:* ${nome}\n✂️ *Serviço:* ${servicoNome}\n📅 *Data/Hora:* ${dataFormatada}`;
-                
-                btnWa.href = `https://wa.me/${numeroBarbearia}?text=${encodeURIComponent(texto)}`;
-                btnWa.style.display = 'flex';
+      <form id="formAgendamento" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 mb-1">Serviço</label>
+          <select id="servico_id" required class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
+            {% for s in servicos %}
+            <option value="{{ s.id }}">{{ s.nome }} — R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-                document.getElementById('formAgendamento').reset();
-            } else {
-                msgDiv.className = 'erro';
-                msgDiv.innerText = data.erro || 'Erro ao agendar.';
-                btnWa.style.display = 'none';
-            }
-        });
-    </script>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 mb-1">Barbeiro</label>
+            <select id="barbeiro" onchange="atualizarHorarios()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
+              <option value="Qualquer profissional">Qualquer profissional</option>
+              {% for b in barbeiros %}
+              <option value="{{ b }}">{{ b }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 mb-1">Data</label>
+            <input type="date" id="data" required onchange="atualizarHorarios()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-semibold text-zinc-400">Horários Populares</label>
+            <span class="text-[11px] text-zinc-500">Clique para selecionar</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2" id="atalhosHorarios">
+            {% for h in ["09:00", "10:30", "14:00", "16:00", "17:30", "18:00", "18:30", "19:00"] %}
+            <button type="button" data-hora="{{ h }}" onclick="selecionarAtalhoHorario('{{ h }}')" class="btn-atalho-hora py-2 rounded-lg bg-zinc-950 border border-zinc-700 hover:border-orange-500 text-xs font-semibold text-zinc-200 transition">
+              {{ h }}
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 mb-1">Ou escolha outro horário livre</label>
+          <select id="horario" required onchange="destacarAtalhoSelecionado()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
+            {% for h in horarios %}
+            <option value="{{ h }}">{{ h }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 mb-1">Seu Nome</label>
+            <input type="text" id="cliente_nome" required placeholder="Nome completo" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 mb-1">Telefone / WhatsApp</label>
+            <input type="tel" id="cliente_telefone" required placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+          </div>
+        </div>
+
+        <p id="erroAgendamento" class="text-xs text-red-400 hidden"></p>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-500/20">
+          Confirmar Agendamento
+        </button>
+      </form>
+
+      <!-- TELA DE CONFIRMAÇÃO -->
+      <div id="sucessoAgendamento" class="hidden space-y-4 text-center py-2">
+        <div class="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl font-bold">✓</div>
+        <h4 class="text-lg font-bold text-white">Agendamento Confirmado!</h4>
+        <p id="resumoSucesso" class="text-sm text-zinc-300 bg-zinc-950 p-4 rounded-xl border border-zinc-800"></p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <a id="btnWhatsApp" href="#" target="_blank" class="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition">
+            Enviar no WhatsApp
+          </a>
+          <button id="btnICS" type="button" class="flex-1 py-3 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-orange-400 font-semibold text-sm border border-zinc-700 transition">
+            Salvar na Agenda (.ics)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL MEUS AGENDAMENTOS -->
+  <div id="modalMeus" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-lg font-bold text-white">Meus <span class="text-orange-500">Agendamentos</span></h3>
+        <button onclick="document.getElementById('modalMeus').classList.add('hidden')" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+      </div>
+      <div class="flex gap-2">
+        <input type="tel" id="buscaTelefone" placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="flex-1 rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2 text-sm text-white outline-none focus:border-orange-500" />
+        <button onclick="buscarMeusAgendamentos()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm">Buscar</button>
+      </div>
+      <div id="listaMeusAgendamentos" class="space-y-2 max-h-72 overflow-y-auto text-sm text-zinc-300"></div>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUM = "{{ whatsapp_barbearia }}";
+    let servicosExpandidos = false;
+
+    function alternarServicos() {
+      servicosExpandidos = !servicosExpandidos;
+      document.querySelectorAll(".servico-extra").forEach(el => {
+        el.classList.toggle("hidden", !servicosExpandidos);
+      });
+      const btn = document.getElementById("btnExpandirServicos");
+      if (btn) {
+        btn.textContent = servicosExpandidos ? "Mostrar menos serviços ↑" : "Ver todos os serviços ({{ servicos|length }}) ↓";
+      }
+    }
+
+    function mascaraTelefone(el) {
+      let v = el.value.replace(/\D/g, "").slice(0, 11);
+      if (v.length > 6) el.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+      else if (v.length > 2) el.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else el.value = v;
+    }
+
+    function destacarAtalhoSelecionado() {
+      const atual = document.getElementById("horario").value;
+      document.querySelectorAll(".btn-atalho-hora").forEach(btn => {
+        const ativo = btn.dataset.hora === atual && !btn.disabled;
+        btn.classList.toggle("bg-orange-500", ativo);
+        btn.classList.toggle("text-white", ativo);
+        btn.classList.toggle("border-orange-500", ativo);
+        btn.classList.toggle("bg-zinc-950", !ativo);
+      });
+    }
+
+    function selecionarAtalhoHorario(hora) {
+      const select = document.getElementById("horario");
+      const opt = Array.from(select.options).find(o => o.value === hora);
+      if (opt && !opt.disabled) {
+        select.value = hora;
+        destacarAtalhoSelecionado();
+      }
+    }
+
+    function abrirModalAgendamento(servicoId = null, barbeiroNome = null) {
+      document.getElementById("formAgendamento").classList.remove("hidden");
+      document.getElementById("sucessoAgendamento").classList.add("hidden");
+      document.getElementById("erroAgendamento").classList.add("hidden");
+      if (servicoId) document.getElementById("servico_id").value = servicoId;
+      if (barbeiroNome) document.getElementById("barbeiro").value = barbeiroNome;
+
+      const inputData = document.getElementById("data");
+      const hoje = new Date().toISOString().split("T")[0];
+      inputData.min = hoje;
+      if (!inputData.value) inputData.value = hoje;
+
+      atualizarHorarios();
+      document.getElementById("modalAgendamento").classList.remove("hidden");
+    }
+
+    function fecharModalAgendamento() {
+      document.getElementById("modalAgendamento").classList.add("hidden");
+    }
+
+    async function atualizarHorarios() {
+      const data = document.getElementById("data").value;
+      const barbeiro = document.getElementById("barbeiro").value;
+      if (!data) return;
+
+      const res = await fetch(`/api/horarios-ocupados?data=${data}&barbeiro=${encodeURIComponent(barbeiro)}`);
+      const json = await res.json();
+      const ocupados = new Set(json.ocupados || []);
+
+      const select = document.getElementById("horario");
+      let primeiroLivre = null;
+      Array.from(select.options).forEach(opt => {
+        const indisponivel = ocupados.has(opt.value);
+        opt.disabled = indisponivel;
+        opt.textContent = indisponivel ? `${opt.value} (Ocupado)` : opt.value;
+        if (!indisponivel && !primeiroLivre) primeiroLivre = opt.value;
+      });
+
+      document.querySelectorAll(".btn-atalho-hora").forEach(btn => {
+        const indisponivel = ocupados.has(btn.dataset.hora);
+        btn.disabled = indisponivel;
+        btn.classList.toggle("opacity-40", indisponivel);
+        btn.classList.toggle("cursor-not-allowed", indisponivel);
+      });
+
+      if (primeiroLivre && select.selectedOptions[0]?.disabled) {
+        select.value = primeiroLivre;
+      }
+      destacarAtalhoSelecionado();
+    }
+
+    function baixarICS(ag) {
+      const dtStart = ag.data.replace(/-/g, "") + "T" + ag.horario.replace(":", "") + "00";
+      const [h, m] = ag.horario.split(":").map(Number);
+      const fimMin = h * 60 + m + 40;
+      const fh = String(Math.floor(fimMin / 60)).padStart(2, "0");
+      const fm = String(fimMin % 60).padStart(2, "0");
+      const dtEnd = ag.data.replace(/-/g, "") + "T" + fh + fm + "00";
+
+      const conteudo = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "BEGIN:VEVENT",
+        `DTSTART:${dtStart}`,
+        `DTEND:${dtEnd}`,
+        `SUMMARY:Barbearia Santos - ${ag.servico_nome} (${ag.barbeiro})`,
+        "LOCATION:Barbearia Santos",
+        "END:VEVENT",
+        "END:VCALENDAR"
+      ].join("\r\n");
+
+      const blob = new Blob([conteudo], { type: "text/calendar;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `agendamento-barbearia-santos-${ag.data}.ics`;
+      a.click();
+    }
+
+    document.getElementById("formAgendamento").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const erroEl = document.getElementById("erroAgendamento");
+      erroEl.classList.add("hidden");
+
+      const payload = {
+        servico_id: document.getElementById("servico_id").value,
+        barbeiro: document.getElementById("barbeiro").value,
+        data: document.getElementById("data").value,
+        horario: document.getElementById("horario").value,
+        cliente_nome: document.getElementById("cliente_nome").value,
+        cliente_telefone: document.getElementById("cliente_telefone").value,
+      };
+
+      const res = await fetch("/api/agendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        erroEl.textContent = json.erro || "Erro ao realizar agendamento.";
+        erroEl.classList.remove("hidden");
+        return;
+      }
+
+      const ag = json.agendamento;
+      const dataBR = ag.data.split("-").reverse().join("/");
+      document.getElementById("resumoSucesso").innerHTML =
+        `<strong>${ag.servico_nome}</strong> com <strong>${ag.barbeiro}</strong><br>Dia <strong>${dataBR}</strong> às <strong>${ag.horario}</strong>`;
+
+      const msg = encodeURIComponent(
+        `Olá! Acabei de agendar na Barbearia Santos:\n• Cliente: ${ag.cliente_nome}\n• Serviço: ${ag.servico_nome}\n• Barbeiro: ${ag.barbeiro}\n• Data: ${dataBR} às ${ag.horario}`
+      );
+      document.getElementById("btnWhatsApp").href = `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
+      document.getElementById("btnICS").onclick = () => baixarICS(ag);
+
+      document.getElementById("formAgendamento").classList.add("hidden");
+      document.getElementById("sucessoAgendamento").classList.remove("hidden");
+    });
+
+    function abrirModalMeusAgendamentos() {
+      document.getElementById("modalMeus").classList.remove("hidden");
+    }
+
+    async function buscarMeusAgendamentos() {
+      const tel = document.getElementById("buscaTelefone").value;
+      const res = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
+      const json = await res.json();
+      const container = document.getElementById("listaMeusAgendamentos");
+
+      if (!json.agendamentos.length) {
+        container.innerHTML = `<p class="text-zinc-500 text-center py-4">Nenhum agendamento encontrado para este número.</p>`;
+        return;
+      }
+
+      container.innerHTML = json.agendamentos.map(a => {
+        const dataBR = a.data.split("-").reverse().join("/");
+        const cancelavel = a.status === "confirmed";
+        return `
+          <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-semibold text-white">${a.servico_nome} • <span class="text-orange-400">${a.barbeiro}</span></p>
+              <p class="text-xs text-zinc-400">${dataBR} às ${a.horario} • Status: ${a.status}</p>
+            </div>
+            ${cancelavel ? `<button onclick="cancelarReserva(${a.id})" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold hover:bg-red-500/30">Cancelar</button>` : ""}
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function cancelarReserva(id) {
+      const tel = document.getElementById("buscaTelefone").value;
+      await fetch(`/api/agendamentos/${id}/cancelar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ telefone: tel }),
+      });
+      buscarMeusAgendamentos();
+    }
+  </script>
 </body>
 </html>

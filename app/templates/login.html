@@ -1,36 +1,66 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Barbearia Santos</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 90vh; }
-        .container { background: #1e1e1e; padding: 30px; border-radius: 8px; width: 100%; max-width: 380px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        h1 { text-align: center; color: #f39c12; margin-bottom: 20px; font-size: 22px; }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: 1px solid #333; box-sizing: border-box; }
-        input { background: #2c2c2c; color: #fff; }
-        button { background: #f39c12; color: #fff; font-weight: bold; border: none; cursor: pointer; margin-top: 20px; font-size: 16px; }
-        button:hover { background: #d35400; }
-        .erro { color: #e74c3c; margin-top: 15px; text-align: center; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin | Barbearia Santos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Barbearia Santos - Admin</h1>
-        {% if erro %}
-            <div class="erro">{{ erro }}</div>
-        {% endif %}
-        <form method="POST" action="/login">
-            <label for="usuario">Usuário:</label>
-            <input type="text" id="usuario" name="usuario" required placeholder="Digite o usuário">
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required placeholder="Digite a senha">
-
-            <button type="submit">Entrar</button>
-        </form>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex items-center justify-center p-4 selection:bg-orange-500 selection:text-white">
+  <div class="w-full max-w-sm space-y-6">
+    <div class="flex flex-col items-center text-center space-y-2">
+      <div class="w-12 h-12 rounded-2xl bg-orange-500 text-zinc-950 flex items-center justify-center font-black text-xl shadow-lg shadow-orange-500/20">
+        ✂
+      </div>
+      <h1 class="text-2xl font-extrabold tracking-tight">
+        Barbearia <span class="text-orange-500">Santos</span>
+      </h1>
+      <p class="text-xs text-zinc-400">Acesso restrito ao painel administrativo</p>
     </div>
+
+    <form method="POST" class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 shadow-xl">
+      {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+        <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 text-center">
+          {{ msgs[0] }}
+        </div>
+        {% endif %}
+      {% endwith %}
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-400 mb-1.5">Usuário</label>
+        <input
+          type="text"
+          name="usuario"
+          required
+          autofocus
+          placeholder="admin"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500 transition"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-400 mb-1.5">Senha</label>
+        <input
+          type="password"
+          name="senha"
+          required
+          placeholder="••••"
+          class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500 transition"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-500/20"
+      >
+        Entrar no Painel
+      </button>
+    </form>
+
+    <a href="{{ url_for('main.index') }}" class="block text-center text-xs text-zinc-500 hover:text-orange-400 transition">
+      ← Voltar para a página de agendamento
+    </a>
+  </div>
 </body>
 </html>
