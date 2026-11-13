@@ -8,14 +8,17 @@
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex items-center justify-center p-4 selection:bg-orange-500 selection:text-white">
   <div class="w-full max-w-sm space-y-6">
-    <div class="flex flex-col items-center text-center space-y-2">
-      <div class="w-12 h-12 rounded-2xl bg-orange-500 text-zinc-950 flex items-center justify-center font-black text-xl shadow-lg shadow-orange-500/20">
-        ✂
+    <div class="flex flex-col items-center text-center space-y-3">
+      <!-- LOGO NO LOGIN -->
+      <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-500 shadow-lg shadow-orange-500/20">
+        <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo Barbearia Santos" class="w-full h-full object-cover">
       </div>
-      <h1 class="text-2xl font-extrabold tracking-tight">
-        Barbearia <span class="text-orange-500">Santos</span>
-      </h1>
-      <p class="text-xs text-zinc-400">Acesso restrito ao painel administrativo</p>
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight font-serif uppercase">
+          Barbearia <span class="text-orange-500">Santos</span>
+        </h1>
+        <p class="text-xs text-zinc-400 mt-1">Acesso restrito ao painel administrativo</p>
+      </div>
     </div>
 
     <form method="POST" class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 shadow-xl">
