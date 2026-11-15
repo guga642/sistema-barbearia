@@ -4,7 +4,7 @@ import io
 import re
 from functools import wraps
 from flask import Flask, Blueprint, Response, flash, jsonify, redirect, render_template, request, session, url_for
-from app.models import db, Servico, Agendamento, BARBEIROS
+from app.models import db, Servico, Agendamento, Bloqueio, BARBEIROS
 
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "barbearia-santos-chave-secreta")
@@ -28,6 +28,14 @@ WHATSAPP_BARBEARIA = os.getenv("WHATSAPP_BARBEARIA", "5561999999999")
 
 def normalizar_telefone(telefone: str) -> str:
     return re.sub(r"\D", "", telefone or "")
+
+
+def barbeiro_esta_bloqueado(bloqueios_data, barbeiro_nome: str, horario: str) -> bool:
+    for b in bloqueios_data:
+        if b.barbeiro in {barbeiro_nome, "Todos"}:
+            if b.horario == "Dia inteiro" or b.horario == horario:
+                return True
+    return False
 
 
 def login_required(f):
@@ -106,16 +114,22 @@ def horarios_ocupados():
         Agendamento.data == data,
         Agendamento.status != "cancelled",
     ).all()
+    bloqueios_data = Bloqueio.query.filter_by(data=data).all()
 
     ocupados = set()
     for horario in HORARIOS_PADRAO:
         no_horario = [a for a in ativos if a.horario == horario]
         if barbeiro != "Qualquer profissional":
             barbeiros_ocupados = {a.barbeiro for a in no_horario if a.barbeiro in BARBEIROS}
-            if barbeiro in barbeiros_ocupados or len(no_horario) >= len(BARBEIROS):
+            bloqueado = barbeiro_esta_bloqueado(bloqueios_data, barbeiro, horario)
+            if bloqueado or barbeiro in barbeiros_ocupados or len(no_horario) >= len(BARBEIROS):
                 ocupados.add(horario)
         else:
-            if len(no_horario) >= len(BARBEIROS):
+            indisponiveis = {a.barbeiro for a in no_horario if a.barbeiro in BARBEIROS}
+            for b_nome in BARBEIROS:
+                if barbeiro_esta_bloqueado(bloqueios_data, b_nome, horario):
+                    indisponiveis.add(b_nome)
+            if len(indisponiveis) >= len(BARBEIROS) or len(no_horario) >= len(BARBEIROS):
                 ocupados.add(horario)
 
     return jsonify({"ocupados": sorted(ocupados)})
@@ -138,6 +152,7 @@ def agendar():
     if not servico or not servico.ativo:
         return jsonify({"erro": "Serviço inválido ou indisponível."}), 400
 
+    bloqueios_data = Bloqueio.query.filter_by(data=data).all()
     no_horario = Agendamento.query.filter(
         Agendamento.data == data,
         Agendamento.horario == horario,
@@ -148,12 +163,19 @@ def agendar():
         return jsonify({"erro": "Todos os barbeiros já estão ocupados nesse horário."}), 409
 
     if barbeiro != "Qualquer profissional":
+        if barbeiro_esta_bloqueado(bloqueios_data, barbeiro, horario):
+            return jsonify({"erro": f"O barbeiro {barbeiro} está com horário bloqueado neste período."}), 409
         if any(a.barbeiro == barbeiro for a in no_horario):
             return jsonify({"erro": f"O barbeiro {barbeiro} já possui um agendamento às {horario}."}), 409
     else:
         ocupados_nomes = {a.barbeiro for a in no_horario}
-        livres = [b for b in BARBEIROS if b not in ocupados_nomes]
-        barbeiro = livres[0] if livres else BARBEIROS[0]
+        livres = [
+            b for b in BARBEIROS
+            if b not in ocupados_nomes and not barbeiro_esta_bloqueado(bloqueios_data, b, horario)
+        ]
+        if not livres:
+            return jsonify({"erro": "Nenhum barbeiro disponível neste horário."}), 409
+        barbeiro = livres[0]
 
     novo = Agendamento(
         cliente_nome=cliente_nome,
@@ -169,7 +191,7 @@ def agendar():
     db.session.add(novo)
     db.session.commit()
 
-    return jsonify({"mensagem": "Agendamento confirmado!", "agendamento": novo.to_dict()}), 201
+    return jsonify({"mensagem": "Agendamento confirmado com sucesso!", "agendamento": novo.to_dict()}), 201
 
 
 @main_bp.route("/api/meus-agendamentos")
@@ -253,12 +275,15 @@ def admin():
     resumo_barbeiros.sort(key=lambda x: x["faturamento"], reverse=True)
 
     servicos = Servico.query.order_by(Servico.ativo.desc(), Servico.id.asc()).all()
+    bloqueios = Bloqueio.query.order_by(Bloqueio.data.desc(), Bloqueio.horario.asc()).all()
 
     return render_template(
         "admin.html",
         agendamentos=agendamentos,
         servicos=servicos,
         barbeiros=BARBEIROS,
+        horarios=HORARIOS_PADRAO,
+        bloqueios=bloqueios,
         resumo_barbeiros=resumo_barbeiros,
         faturamento_bruto=faturamento_bruto,
         recebido=recebido,
@@ -281,6 +306,34 @@ def atualizar_status_agendamento(agendamento_id):
         ag.status = novo_status
         db.session.commit()
     return redirect(request.referrer or url_for("main.admin"))
+
+
+@main_bp.route("/admin/bloqueios/novo", methods=["POST"])
+@login_required
+def novo_bloqueio():
+    barbeiro = (request.form.get("barbeiro") or "Todos").strip()
+    data = (request.form.get("data") or "").strip()
+    horario = (request.form.get("horario") or "Dia inteiro").strip()
+    motivo = (request.form.get("motivo") or "").strip()
+
+    if data:
+        db.session.add(Bloqueio(
+            barbeiro=barbeiro,
+            data=data,
+            horario=horario,
+            motivo=motivo,
+        ))
+        db.session.commit()
+    return redirect(url_for("main.admin"))
+
+
+@main_bp.route("/admin/bloqueios/<int:bloqueio_id>/excluir", methods=["POST"])
+@login_required
+def excluir_bloqueio(bloqueio_id):
+    bloqueio = Bloqueio.query.get_or_404(bloqueio_id)
+    db.session.delete(bloqueio)
+    db.session.commit()
+    return redirect(url_for("main.admin"))
 
 
 @main_bp.route("/admin/servicos/novo", methods=["POST"])
@@ -344,7 +397,8 @@ def exportar_csv():
 
 app.register_blueprint(main_bp)
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(host="0.0.0.0", port=5000, debug=True)

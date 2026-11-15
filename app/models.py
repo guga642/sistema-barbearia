@@ -1,19 +1,18 @@
-from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
-# Lista de profissionais atualizada
 BARBEIROS = ["Lucas", "Carlos", "Diego", "Mateus"]
+
 
 class Servico(db.Model):
     __tablename__ = "servicos"
-
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    descricao = db.Column(db.String(255), default="")
+    descricao = db.Column(db.String(255), nullable=True)
     preco = db.Column(db.Float, nullable=False)
-    duracao_min = db.Column(db.Integer, default=30)
+    duracao_min = db.Column(db.Integer, nullable=False, default=30)
     destaque = db.Column(db.Boolean, default=False)
     ativo = db.Column(db.Boolean, default=True)
 
@@ -28,9 +27,9 @@ class Servico(db.Model):
             "ativo": self.ativo,
         }
 
+
 class Agendamento(db.Model):
     __tablename__ = "agendamentos"
-
     id = db.Column(db.Integer, primary_key=True)
     cliente_nome = db.Column(db.String(120), nullable=False)
     cliente_telefone = db.Column(db.String(25), nullable=False)
@@ -55,3 +54,13 @@ class Agendamento(db.Model):
             "horario": self.horario,
             "status": self.status,
         }
+
+
+class Bloqueio(db.Model):
+    __tablename__ = "bloqueios"
+    id = db.Column(db.Integer, primary_key=True)
+    barbeiro = db.Column(db.String(60), nullable=False)  # Nome do barbeiro ou "Todos"
+    data = db.Column(db.String(10), nullable=False)      # Formato YYYY-MM-DD
+    horario = db.Column(db.String(15), nullable=False)   # Horário específico ou "Dia inteiro"
+    motivo = db.Column(db.String(120), nullable=True)
+    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
