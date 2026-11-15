@@ -8,7 +8,7 @@
 </head>
 <body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-orange-500 selection:text-white">
 
-<!-- HEADER / NAVBAR -->
+  <!-- HEADER / NAVBAR -->
   <header class="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80">
     <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
       <a href="#" class="flex items-center gap-3 group">
@@ -29,11 +29,15 @@
 
       <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
         <a href="#servicos" class="hover:text-orange-400 transition">Serviços</a>
+        <button type="button" onclick="abrirModalFidelidade()" class="hover:text-orange-400 transition">Clube Fidelidade</button>
         <a href="#sobre" class="hover:text-orange-400 transition">Sobre Nós</a>
         <a href="#contato" class="hover:text-orange-400 transition">Contato</a>
       </nav>
 
       <div class="flex items-center gap-2">
+        <button type="button" onclick="abrirModalFidelidade()" class="md:hidden px-3 py-2 text-xs font-medium rounded-xl border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 transition">
+          Fidelidade
+        </button>
         <button onclick="abrirModalMeusAgendamentos()" class="px-3.5 py-2 text-xs sm:text-sm font-medium rounded-xl border border-zinc-700 hover:border-orange-500 text-zinc-200 transition">
           Meus Agendamentos
         </button>
@@ -293,6 +297,41 @@
     </div>
   </div>
 
+  <!-- MODAL CLUBE FIDELIDADE -->
+  <div id="modalFidelidade" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-lg font-bold text-white">Clube <span class="text-orange-500">Fidelidade</span></h3>
+        <button type="button" onclick="fecharModalFidelidade()" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+      </div>
+
+      <div class="p-4 rounded-xl bg-zinc-950 border border-orange-500/30 space-y-2">
+        <span class="inline-block px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider rounded-full bg-orange-500/15 text-orange-400">
+          10 Pontos = 1 Corte Grátis
+        </span>
+        <p class="text-sm text-zinc-200 font-semibold">Acumule pontos a cada atendimento e troque por cortes!</p>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Cada atendimento concluído na Barbearia Santos vale <strong class="text-orange-400">1 ponto</strong>. Ao completar <strong class="text-white">10 pontos</strong>, você pode resgatar um corte gratuitamente.
+        </p>
+        <p class="text-xs text-orange-400 font-semibold pt-1">
+          * Atenção: O acúmulo de pontos e a troca por cortes funcionam exclusivamente de segunda a quinta-feira.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-xs font-semibold text-zinc-400">Consultar meus pontos pelo telefone</label>
+        <div class="flex gap-2">
+          <input type="tel" id="telefoneFidelidade" placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="flex-1 rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2 text-sm text-white outline-none focus:border-orange-500" />
+          <button type="button" onclick="consultarPontosFidelidade()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition">
+            Consultar
+          </button>
+        </div>
+      </div>
+
+      <div id="resultadoFidelidade" class="hidden p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-2"></div>
+    </div>
+  </div>
+
   <script>
     const WHATSAPP_NUM = "{{ whatsapp_barbearia }}";
     let servicosExpandidos = false;
@@ -353,6 +392,52 @@
 
     function fecharModalAgendamento() {
       document.getElementById("modalAgendamento").classList.add("hidden");
+    }
+
+    function abrirModalFidelidade() {
+      document.getElementById("resultadoFidelidade").classList.add("hidden");
+      document.getElementById("modalFidelidade").classList.remove("hidden");
+    }
+
+    function fecharModalFidelidade() {
+      document.getElementById("modalFidelidade").classList.add("hidden");
+    }
+
+    async function consultarPontosFidelidade() {
+      const tel = document.getElementById("telefoneFidelidade").value;
+      const box = document.getElementById("resultadoFidelidade");
+
+      if (tel.replace(/\D/g, "").length < 10) {
+        box.innerHTML = `<p class="text-xs text-red-400">Digite um telefone válido com DDD.</p>`;
+        box.classList.remove("hidden");
+        return;
+      }
+
+      const res = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
+      const json = await res.json();
+      const concluidos = (json.agendamentos || []).filter(a => a.status === "completed").length;
+      const pontos = concluidos % 10;
+      const cortesDisponiveis = Math.floor(concluidos / 10);
+      const faltam = 10 - pontos;
+
+      box.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs text-zinc-400 block">Seus Pontos Atuais</span>
+            <span class="text-2xl font-black text-orange-400">${pontos} / 10 pts</span>
+          </div>
+          <div class="text-right">
+            ${cortesDisponiveis > 0
+              ? `<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">${cortesDisponiveis} Corte(s) Grátis!</span>`
+              : `<span class="text-xs text-zinc-400">Faltam <strong class="text-white">${faltam}</strong> ponto(s)</span>`
+            }
+          </div>
+        </div>
+        <p class="text-[11px] text-zinc-500 pt-1 border-t border-zinc-800">
+          Apresente este telefone na barbearia de <strong class="text-zinc-300">segunda a quinta-feira</strong> para resgatar seu corte.
+        </p>
+      `;
+      box.classList.remove("hidden");
     }
 
     async function atualizarHorarios() {
@@ -447,7 +532,7 @@
         `<strong>${ag.servico_nome}</strong> com <strong>${ag.barbeiro}</strong><br>Dia <strong>${dataBR}</strong> às <strong>${ag.horario}</strong>`;
 
       const msg = encodeURIComponent(
-        `Olá! Acabei de agendar na Barbearia Santos:\n• Cliente: ${ag.cliente_nome}\n• Serviço: ${ag.servico_nome}\n• Barbeiro: ${ag.barbeiro}\n• Data: ${dataBR} às ${ag.horario}`
+        `Olá! Acabei de agendar na Barbearia Santos:\nCliente: ${ag.cliente_nome}\nServiço: ${ag.servico_nome}\nBarbeiro: ${ag.barbeiro}\nData: ${dataBR} às ${ag.horario}`
       );
       document.getElementById("btnWhatsApp").href = `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
       document.getElementById("btnICS").onclick = () => baixarICS(ag);
