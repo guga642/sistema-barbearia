@@ -3,583 +3,800 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barbearia Santos | Cortes Clássicos e Modernos</title>
+  <title>Barbearia Santos | Estilo, Tradição & Agendamento Online</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* MODO DE ALTO CONTRASTE (WCAG AAA) */
+    html.alto-contraste,
+    html.alto-contraste body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    html.alto-contraste section,
+    html.alto-contraste header,
+    html.alto-contraste footer,
+    html.alto-contraste nav,
+    html.alto-contraste div,
+    html.alto-contraste article {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #ffd700 !important;
+    }
+    html.alto-contraste p,
+    html.alto-contraste span,
+    html.alto-contraste label,
+    html.alto-contraste h1,
+    html.alto-contraste h2,
+    html.alto-contraste h3,
+    html.alto-contraste li {
+      color: #ffffff !important;
+    }
+    html.alto-contraste a,
+    html.alto-contraste button {
+      background-color: #ffd700 !important;
+      color: #000000 !important;
+      border: 2px solid #ffffff !important;
+      font-weight: 800 !important;
+    }
+    html.alto-contraste button:disabled {
+      background-color: #222222 !important;
+      color: #888888 !important;
+      border-color: #555555 !important;
+    }
+    html.alto-contraste input,
+    html.alto-contraste select {
+      background-color: #000000 !important;
+      color: #ffd700 !important;
+      border: 2px solid #ffd700 !important;
+    }
+  </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-orange-500 selection:text-white">
+<body class="bg-zinc-950 text-zinc-100 min-h-screen antialiased selection:bg-orange-500 selection:text-white">
 
-  <!-- HEADER / NAVBAR -->
-  <header class="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80">
-    <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-3 group">
-        <!-- SEU LOGO REDONDINHO -->
-        <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-orange-500/50 group-hover:border-orange-500 transition shadow-md shadow-orange-500/10">
-          <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo Barbearia Santos" class="w-full h-full object-cover">
+  <!-- CABEÇALHO / MENU PRINCIPAL -->
+  <header class="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between gap-3">
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-orange-500/60 shadow-md shadow-orange-500/10 bg-zinc-900 flex items-center justify-center">
+          <img
+            src="{{ url_for('static', filename='img/logo.jpeg') }}"
+            alt="Logo Barbearia Santos"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none'"
+          />
         </div>
-        <!-- NOME COM TIPOGRAFIA PREMIUM -->
-        <div class="flex flex-col">
-          <span class="font-serif tracking-widest text-lg text-white font-bold uppercase leading-none">
-            Barbearia
+        <div>
+          <span class="font-serif font-bold text-base sm:text-lg tracking-widest text-white uppercase leading-none block">
+            Barbearia <span class="text-orange-500 font-black">Santos</span>
           </span>
-          <span class="text-orange-500 font-black tracking-wider text-xl uppercase leading-none mt-1">
-            Santos
-          </span>
+          <span class="text-[11px] text-zinc-400 mt-1 block">Corte, Barba & Tradição</span>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
+      <nav aria-label="Menu Principal" class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-300">
         <a href="#servicos" class="hover:text-orange-400 transition">Serviços</a>
-        <button type="button" onclick="abrirModalFidelidade()" class="hover:text-orange-400 transition">Clube Fidelidade</button>
-        <a href="#sobre" class="hover:text-orange-400 transition">Sobre Nós</a>
-        <a href="#contato" class="hover:text-orange-400 transition">Contato</a>
+        <a href="#equipe" class="hover:text-orange-400 transition">Profissionais</a>
+        <button type="button" onclick="abrirModalFidelidade()" class="hover:text-orange-400 transition font-semibold text-orange-400">
+          ★ Clube Fidelidade
+        </button>
+        <button type="button" onclick="abrirModalMeusAgendamentos()" class="hover:text-orange-400 transition">
+          Meus Agendamentos
+        </button>
       </nav>
 
       <div class="flex items-center gap-2">
-        <button type="button" onclick="abrirModalFidelidade()" class="md:hidden px-3 py-2 text-xs font-medium rounded-xl border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 transition">
-          Fidelidade
+        <button
+          type="button"
+          onclick="abrirModalFidelidade()"
+          class="md:hidden px-3 py-2 rounded-xl bg-zinc-900 border border-orange-500/30 text-orange-400 text-xs font-bold"
+          aria-label="Abrir Clube Fidelidade"
+        >
+          ★ Fidelidade
         </button>
-        <button onclick="abrirModalMeusAgendamentos()" class="px-3.5 py-2 text-xs sm:text-sm font-medium rounded-xl border border-zinc-700 hover:border-orange-500 text-zinc-200 transition">
-          Meus Agendamentos
+        <button
+          type="button"
+          onclick="abrirModalMeusAgendamentos()"
+          class="md:hidden px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold"
+        >
+          Consultas
         </button>
-        <a href="{{ url_for('main.login') }}" class="px-3 py-2 text-xs sm:text-sm rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-orange-400 border border-zinc-800 transition">
+        <button
+          type="button"
+          onclick="abrirModalAgendamento()"
+          class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-bold transition shadow-lg shadow-orange-500/20"
+        >
+          Agendar Agora
+        </button>
+        <a
+          href="{{ url_for('main.login') }}"
+          class="hidden sm:inline-flex px-3 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-400 hover:text-white transition"
+        >
           Admin
         </a>
       </div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="relative overflow-hidden py-20 sm:py-28 px-4 border-b border-zinc-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/15 via-zinc-950 to-zinc-950">
-    <div class="max-w-4xl mx-auto text-center space-y-6">
-      <span class="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
-        ★ Estilo, Precisão & Tradição
-      </span>
-      <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
-        Seu visual em dia, <span class="text-orange-500">sem espera na cadeira.</span>
-      </h1>
-      <p class="text-zinc-400 max-w-2xl mx-auto text-base sm:text-lg">
-        Agende online em menos de 1 minuto com nossos especialistas, escolha seu horário preferido e receba a confirmação direto no WhatsApp.
-      </p>
-      <div class="pt-3 flex flex-col sm:flex-row gap-3 justify-center">
-        <button onclick="abrirModalAgendamento()" class="px-8 py-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-base transition shadow-lg shadow-orange-500/25">
-          Agendar Horário
-        </button>
-        <a href="#servicos" class="px-8 py-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-semibold border border-zinc-800 transition">
-          Conhecer Serviços
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- VITRINE DE SERVIÇOS -->
-  <section id="servicos" class="py-16 sm:py-20 px-4 max-w-6xl mx-auto">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-      <div>
-        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Tabela de Preços</span>
-        <h2 class="text-3xl font-extrabold mt-1">Nossos Serviços</h2>
-      </div>
-      <p class="text-zinc-400 text-sm">Clique em reservar para escolher o barbeiro e o horário.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {% for s in servicos %}
-      <div class="servico-card {{ 'hidden servico-extra' if loop.index > 3 else '' }} p-6 rounded-2xl bg-zinc-900/90 border {{ 'border-orange-500 ring-1 ring-orange-500/30 relative' if s.destaque else 'border-zinc-800' }} flex flex-col justify-between transition hover:border-orange-500/60">
-        {% if s.destaque %}
-        <span class="absolute -top-3 right-5 px-3 py-0.5 text-[11px] font-extrabold uppercase tracking-wider rounded-full bg-orange-500 text-zinc-950">
-          Destaque
+  <!-- HERO PRINCIPAL -->
+  <section class="relative overflow-hidden border-b border-zinc-900">
+    <div class="max-w-6xl mx-auto px-4 py-14 sm:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider">
+          Agendamento Online em Tempo Real
         </span>
-        {% endif %}
-        <div>
-          <div class="flex items-center justify-between gap-2">
-            <h3 class="font-bold text-xl text-white">{{ s.nome }}</h3>
-            <span class="text-xs px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-300">{{ s.duracao_min }} min</span>
-          </div>
-          <p class="text-zinc-400 text-sm mt-3 leading-relaxed">{{ s.descricao }}</p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
-          <div>
-            <span class="text-xs text-zinc-500 block">Valor</span>
-            <span class="text-2xl font-black text-orange-400">R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}</span>
-          </div>
+
+        <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+          Seu visual no padrão <span class="text-orange-500">Barbearia Santos</span>, sem espera na fila.
+        </h1>
+
+        <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+          Escolha o serviço, selecione seu barbeiro de preferência e reserve seu horário em poucos segundos. De segunda a quinta-feira você ainda acumula pontos no Clube Fidelidade.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3 pt-2">
           <button
-            onclick="abrirModalAgendamento({{ s.id }})"
-            class="px-5 py-2.5 rounded-xl {{ 'bg-orange-500 hover:bg-orange-600 text-white' if s.destaque else 'bg-zinc-800 hover:bg-orange-500 text-zinc-100 hover:text-white' }} text-sm font-bold transition">
-            Agendar
+            type="button"
+            onclick="abrirModalAgendamento()"
+            class="px-6 py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm sm:text-base transition shadow-xl shadow-orange-500/25"
+          >
+            Reservar Horário
+          </button>
+          <button
+            type="button"
+            onclick="abrirModalMeusAgendamentos()"
+            class="px-5 py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 font-semibold text-sm transition"
+          >
+            Consultar / Cancelar Reserva
+          </button>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-zinc-900 max-w-lg">
+          <div>
+            <span class="text-xl font-black text-white">09h–19h</span>
+            <span class="block text-xs text-zinc-400">Segunda a Sábado</span>
+          </div>
+          <div>
+            <span class="text-xl font-black text-orange-500">{{ barbeiros|length }} Barbeiros</span>
+            <span class="block text-xs text-zinc-400">Equipe especializada</span>
+          </div>
+          <div>
+            <span class="text-xl font-black text-emerald-400">Clube VIP</span>
+            <span class="block text-xs text-zinc-400">Pontos Seg a Qui</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="p-6 rounded-3xl bg-zinc-900/90 border border-zinc-800 space-y-5 shadow-2xl">
+          <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Clube Fidelidade Santos</span>
+              <h2 class="text-lg font-bold text-white mt-0.5">Corte Grátis para Clientes Fiéis</h2>
+            </div>
+            <span class="w-10 h-10 rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 font-black flex items-center justify-center">
+              ★
+            </span>
+          </div>
+          <p class="text-sm text-zinc-300 leading-relaxed">
+            Atendimentos concluídos entre <strong>segunda e quinta-feira</strong> somam <strong>1 ponto</strong> automaticamente no seu telefone cadastrado. Ao completar <strong>5 pontos</strong>, você ganha um corte cortesia.
+          </p>
+          <button
+            type="button"
+            onclick="abrirModalFidelidade()"
+            class="w-full py-3 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-orange-500/40 text-orange-400 font-bold text-sm transition"
+          >
+            Consultar Meus Pontos
           </button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO DE SERVIÇOS -->
+  <section id="servicos" class="max-w-6xl mx-auto px-4 py-14 space-y-8">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Tabela de Preços</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Nossos Serviços</h2>
+      </div>
+      <span class="text-xs text-zinc-400">Selecione um serviço para iniciar o agendamento</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% for s in servicos %}
+      <article class="p-6 rounded-2xl bg-zinc-900 border {{ 'border-orange-500/50 shadow-lg shadow-orange-500/5' if s.destaque else 'border-zinc-800' }} flex flex-col justify-between gap-5">
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-bold text-lg text-white">{{ s.nome }}</h3>
+            {% if s.destaque %}
+            <span class="px-2.5 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              Mais Pedido
+            </span>
+            {% endif %}
+          </div>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            {{ s.descricao or "Atendimento completo com acabamento profissional." }}
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-xl font-black text-orange-400">
+              R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}
+            </span>
+            <span class="block text-xs text-zinc-500">{{ s.duracao_min }} minutos</span>
+          </div>
+          <button
+            type="button"
+            onclick="abrirModalAgendamento({{ s.id }})"
+            class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition"
+          >
+            Agendar
+          </button>
+        </div>
+      </article>
       {% endfor %}
     </div>
-
-    {% if servicos|length > 3 %}
-    <div class="mt-8 text-center">
-      <button id="btnExpandirServicos" onclick="alternarServicos()" class="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-sm font-semibold text-orange-400 transition">
-        Ver todos os serviços ({{ servicos|length }}) ↓
-      </button>
-    </div>
-    {% endif %}
   </section>
 
-  <!-- SOBRE NÓS E EQUIPE -->
-  <section id="sobre" class="py-16 sm:py-20 px-4 bg-zinc-900/50 border-y border-zinc-900">
-    <div class="max-w-6xl mx-auto space-y-16">
-      <!-- Diferenciais -->
+  <!-- EQUIPE DE BARBEIROS -->
+  <section id="equipe" class="border-t border-zinc-900 bg-zinc-900/30">
+    <div class="max-w-6xl mx-auto px-4 py-14 space-y-8">
       <div>
-        <div class="text-center max-w-2xl mx-auto mb-10">
-          <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Sobre Nós</span>
-          <h2 class="text-3xl font-extrabold mt-1">Por que escolher a Barbearia Santos?</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
-            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">01</div>
-            <h3 class="font-bold text-lg text-white">Horário Pontual</h3>
-            <p class="text-sm text-zinc-400 mt-2">Sistema inteligente que evita choques de agenda e respeita o seu tempo.</p>
-          </div>
-          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
-            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">02</div>
-            <h3 class="font-bold text-lg text-white">Toalha Quente & Acabamento</h3>
-            <p class="text-sm text-zinc-400 mt-2">Ritual completo de barbearia tradicional aliado às técnicas modernas de degradê.</p>
-          </div>
-          <div class="p-6 rounded-2xl bg-zinc-950 border border-zinc-800">
-            <div class="w-10 h-10 rounded-xl bg-orange-500/15 text-orange-500 flex items-center justify-center font-bold mb-4">03</div>
-            <h3 class="font-bold text-lg text-white">Ambiente Climatizado</h3>
-            <p class="text-sm text-zinc-400 mt-2">Espaço confortável, café cortesia e atendimento personalizado do início ao fim.</p>
-          </div>
-        </div>
+        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Profissionais</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Nossa Equipe</h2>
       </div>
 
-      <!-- Equipe -->
-      <div>
-        <h3 class="text-2xl font-bold mb-6">Nossa Equipe</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {% set especialidades = {'Lucas': 'Degradê & Navalhado', 'Carlos': 'Barba Terapia & Clássicos', 'Diego': 'Cortes Modernos & Tesoura', 'Mateus': 'Acabamento & Pigmentação'} %}
-          {% for b in barbeiros %}
-          <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-orange-500/50 transition text-center">
-            <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 font-black text-2xl flex items-center justify-center mb-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {% for b in barbeiros %}
+        <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 font-black text-lg flex items-center justify-center">
               {{ b[0] }}
             </div>
-            <h4 class="font-bold text-white text-base">{{ b }}</h4>
-            <p class="text-xs text-zinc-400 mt-1">{{ especialidades.get(b, 'Barbeiro Especialista') }}</p>
-            <button onclick="abrirModalAgendamento(null, '{{ b }}')" class="mt-4 w-full py-2 rounded-lg bg-zinc-900 hover:bg-orange-500 text-xs font-semibold text-zinc-300 hover:text-white transition">
-              Agendar com {{ b }}
-            </button>
+            <div>
+              <h3 class="font-bold text-white text-base">{{ b }}</h3>
+              <span class="text-xs text-zinc-400">Barbeiro Profissional</span>
+            </div>
           </div>
-          {% endfor %}
+          <button
+            type="button"
+            onclick="abrirModalAgendamento(null, '{{ b }}')"
+            class="px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-700 text-xs font-semibold text-orange-400 transition"
+          >
+            Horários
+          </button>
         </div>
+        {% endfor %}
       </div>
     </div>
   </section>
 
-  <!-- CONTATO -->
-  <section id="contato" class="py-16 px-4 max-w-6xl mx-auto">
-    <div class="p-8 rounded-3xl bg-zinc-900 border border-zinc-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-      <div class="space-y-2">
-        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Onde Estamos</span>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Venha nos visitar</h2>
-        <p class="text-sm text-zinc-400">Segunda a Sábado • 09:00 às 19:30</p>
-        <p class="text-sm text-zinc-300">Rua Principal, Centro — Atendimento com hora marcada</p>
-      </div>
-      <div class="flex flex-wrap gap-3 w-full md:w-auto">
-        <a href="https://maps.google.com/?q=Barbearia+Santos" target="_blank" class="flex-1 md:flex-initial text-center px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm border border-zinc-700 transition">
-          Abrir no Google Maps
+  <!-- RODAPÉ -->
+  <footer class="border-t border-zinc-900 py-8 pb-20">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+      <span>© 2026 Barbearia Santos — Todos os direitos reservados.</span>
+      <div class="flex items-center gap-4">
+        <a
+          href="https://wa.me/{{ whatsapp_barbearia }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-zinc-400 hover:text-orange-400 transition"
+        >
+          Contato WhatsApp
         </a>
-        <a href="https://wa.me/{{ whatsapp_barbearia }}" target="_blank" class="flex-1 md:flex-initial text-center px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition">
-          Chamar no WhatsApp
+        <a href="{{ url_for('main.login') }}" class="text-zinc-400 hover:text-orange-400 transition">
+          Painel Administrativo
         </a>
       </div>
     </div>
-  </section>
+  </footer>
 
-  <!-- MODAL DE AGENDAMENTO -->
-  <div id="modalAgendamento" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-5 relative">
+  <!-- ========================================================= -->
+  <!-- MODAL 1: AGENDAMENTO ONLINE                               -->
+  <!-- ========================================================= -->
+  <div
+    id="modal-agendamento"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-modal-agendamento"
+    class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+  >
+    <div class="w-full max-w-lg rounded-3xl bg-zinc-900 border border-zinc-800 p-6 space-y-5 shadow-2xl my-auto">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h3 class="text-lg font-bold text-white">Agendar <span class="text-orange-500">Horário</span></h3>
-        <button onclick="fecharModalAgendamento()" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+        <div>
+          <h2 id="titulo-modal-agendamento" class="font-bold text-lg text-white">Novo Agendamento</h2>
+          <p class="text-xs text-zinc-400">Horários bloqueados ou ocupados são desabilitados automaticamente</p>
+        </div>
+        <button
+          type="button"
+          onclick="fecharModal('modal-agendamento')"
+          aria-label="Fechar janela de agendamento"
+          class="w-8 h-8 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold text-sm"
+        >
+          ✕
+        </button>
       </div>
 
-      <form id="formAgendamento" class="space-y-4">
+      <form id="form-agendamento" onsubmit="enviarAgendamento(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-zinc-400 mb-1">Serviço</label>
-          <select id="servico_id" required class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
+          <label for="ag-servico" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Serviço</label>
+          <select
+            id="ag-servico"
+            required
+            class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+          >
             {% for s in servicos %}
-            <option value="{{ s.id }}">{{ s.nome }} — R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }}</option>
+            <option value="{{ s.id }}" data-nome="{{ s.nome }}" data-preco="{{ s.preco }}">
+              {{ s.nome }} — R$ {{ "%.2f"|format(s.preco)|replace(".", ",") }} ({{ s.duracao_min }} min)
+            </option>
             {% endfor %}
           </select>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-zinc-400 mb-1">Barbeiro</label>
-            <select id="barbeiro" onchange="atualizarHorarios()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
+            <label for="ag-barbeiro" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Profissional</label>
+            <select
+              id="ag-barbeiro"
+              onchange="carregarHorariosDisponiveis()"
+              class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+            >
               <option value="Qualquer profissional">Qualquer profissional</option>
               {% for b in barbeiros %}
               <option value="{{ b }}">{{ b }}</option>
               {% endfor %}
             </select>
           </div>
+
           <div>
-            <label class="block text-xs font-semibold text-zinc-400 mb-1">Data</label>
-            <input type="date" id="data" required onchange="atualizarHorarios()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+            <label for="ag-data" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Data</label>
+            <input
+              type="date"
+              id="ag-data"
+              required
+              onchange="carregarHorariosDisponiveis()"
+              class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+            />
           </div>
         </div>
 
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-semibold text-zinc-400">Horários Populares</label>
-            <span class="text-[11px] text-zinc-500">Clique para selecionar</span>
-          </div>
-          <div class="grid grid-cols-4 gap-2" id="atalhosHorarios">
-            {% for h in ["09:00", "10:30", "14:00", "16:00", "17:30", "18:00", "18:30", "19:00"] %}
-            <button type="button" data-hora="{{ h }}" onclick="selecionarAtalhoHorario('{{ h }}')" class="btn-atalho-hora py-2 rounded-lg bg-zinc-950 border border-zinc-700 hover:border-orange-500 text-xs font-semibold text-zinc-200 transition">
+          <span class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Horário Disponível</span>
+          <input type="hidden" id="ag-horario" required />
+          <div id="grid-horarios" class="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-44 overflow-y-auto pr-1">
+            {% for h in horarios %}
+            <button
+              type="button"
+              data-horario="{{ h }}"
+              onclick="selecionarHorario('{{ h }}', this)"
+              class="btn-horario py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-bold text-zinc-200 hover:border-orange-500 transition"
+            >
               {{ h }}
             </button>
             {% endfor %}
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-zinc-400 mb-1">Ou escolha outro horário livre</label>
-          <select id="horario" required onchange="destacarAtalhoSelecionado()" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none">
-            {% for h in horarios %}
-            <option value="{{ h }}">{{ h }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-zinc-400 mb-1">Seu Nome</label>
-            <input type="text" id="cliente_nome" required placeholder="Nome completo" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+            <label for="ag-nome" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Seu Nome</label>
+            <input
+              type="text"
+              id="ag-nome"
+              required
+              placeholder="Ex: Gustavo Silva"
+              class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+            />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-zinc-400 mb-1">Telefone / WhatsApp</label>
-            <input type="tel" id="cliente_telefone" required placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2.5 text-sm text-white focus:border-orange-500 outline-none" />
+            <label for="ag-telefone" class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">WhatsApp / Telefone</label>
+            <input
+              type="tel"
+              id="ag-telefone"
+              required
+              placeholder="(61) 99999-9999"
+              class="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+            />
           </div>
         </div>
 
-        <p id="erroAgendamento" class="text-xs text-red-400 hidden"></p>
+        <div id="ag-feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
 
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-500/20">
+        <button
+          type="submit"
+          class="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition shadow-lg shadow-orange-500/20"
+        >
           Confirmar Agendamento
         </button>
       </form>
-
-      <!-- TELA DE CONFIRMAÇÃO -->
-      <div id="sucessoAgendamento" class="hidden space-y-4 text-center py-2">
-        <div class="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl font-bold">✓</div>
-        <h4 class="text-lg font-bold text-white">Agendamento Confirmado!</h4>
-        <p id="resumoSucesso" class="text-sm text-zinc-300 bg-zinc-950 p-4 rounded-xl border border-zinc-800"></p>
-        <div class="flex flex-col sm:flex-row gap-2">
-          <a id="btnWhatsApp" href="#" target="_blank" class="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition">
-            Enviar no WhatsApp
-          </a>
-          <button id="btnICS" type="button" class="flex-1 py-3 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-orange-400 font-semibold text-sm border border-zinc-700 transition">
-            Salvar na Agenda (.ics)
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- MODAL MEUS AGENDAMENTOS -->
-  <div id="modalMeus" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
+  <!-- ========================================================= -->
+  <!-- MODAL 2: MEUS AGENDAMENTOS                                -->
+  <!-- ========================================================= -->
+  <div
+    id="modal-meus-agendamentos"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-modal-consultas"
+    class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-lg rounded-3xl bg-zinc-900 border border-zinc-800 p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h3 class="text-lg font-bold text-white">Meus <span class="text-orange-500">Agendamentos</span></h3>
-        <button onclick="document.getElementById('modalMeus').classList.add('hidden')" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
+        <h2 id="titulo-modal-consultas" class="font-bold text-lg text-white">Meus Agendamentos</h2>
+        <button
+          type="button"
+          onclick="fecharModal('modal-meus-agendamentos')"
+          aria-label="Fechar janela de consultas"
+          class="w-8 h-8 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold text-sm"
+        >
+          ✕
+        </button>
       </div>
+
       <div class="flex gap-2">
-        <input type="tel" id="buscaTelefone" placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="flex-1 rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2 text-sm text-white outline-none focus:border-orange-500" />
-        <button onclick="buscarMeusAgendamentos()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm">Buscar</button>
+        <input
+          type="tel"
+          id="consulta-telefone"
+          placeholder="Digite seu telefone com DDD"
+          class="flex-1 rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <button
+          type="button"
+          onclick="buscarMeusAgendamentos()"
+          class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition"
+        >
+          Buscar
+        </button>
       </div>
-      <div id="listaMeusAgendamentos" class="space-y-2 max-h-72 overflow-y-auto text-sm text-zinc-300"></div>
+
+      <div id="lista-meus-agendamentos" class="space-y-2.5 max-h-72 overflow-y-auto">
+        <p class="text-xs text-zinc-400 text-center py-6">Informe seu telefone acima para visualizar ou cancelar reservas.</p>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL CLUBE FIDELIDADE -->
-  <div id="modalFidelidade" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
+  <!-- ========================================================= -->
+  <!-- MODAL 3: CLUBE FIDELIDADE                                  -->
+  <!-- ========================================================= -->
+  <div
+    id="modal-fidelidade"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-modal-fidelidade"
+    class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-md rounded-3xl bg-zinc-900 border border-orange-500/40 p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h3 class="text-lg font-bold text-white">Clube <span class="text-orange-500">Fidelidade</span></h3>
-        <button type="button" onclick="fecharModalFidelidade()" class="text-zinc-400 hover:text-white text-2xl leading-none">×</button>
-      </div>
-
-      <div class="p-4 rounded-xl bg-zinc-950 border border-orange-500/30 space-y-2">
-        <span class="inline-block px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider rounded-full bg-orange-500/15 text-orange-400">
-          10 Pontos = 1 Corte Grátis
-        </span>
-        <p class="text-sm text-zinc-200 font-semibold">Acumule pontos a cada atendimento e troque por cortes!</p>
-        <p class="text-xs text-zinc-400 leading-relaxed">
-          Cada atendimento concluído na Barbearia Santos vale <strong class="text-orange-400">1 ponto</strong>. Ao completar <strong class="text-white">10 pontos</strong>, você pode resgatar um corte gratuitamente.
-        </p>
-        <p class="text-xs text-orange-400 font-semibold pt-1">
-          * Atenção: O acúmulo de pontos e a troca por cortes funcionam exclusivamente de segunda a quinta-feira.
-        </p>
-      </div>
-
-      <div class="space-y-2">
-        <label class="block text-xs font-semibold text-zinc-400">Consultar meus pontos pelo telefone</label>
-        <div class="flex gap-2">
-          <input type="tel" id="telefoneFidelidade" placeholder="(61) 99999-9999" oninput="mascaraTelefone(this)" class="flex-1 rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-2 text-sm text-white outline-none focus:border-orange-500" />
-          <button type="button" onclick="consultarPontosFidelidade()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition">
-            Consultar
-          </button>
+        <div>
+          <h2 id="titulo-modal-fidelidade" class="font-bold text-lg text-white">★ Clube Fidelidade Santos</h2>
+          <p class="text-xs text-zinc-400">Atendimentos concluídos de Segunda a Quinta valem 1 ponto</p>
         </div>
+        <button
+          type="button"
+          onclick="fecharModal('modal-fidelidade')"
+          aria-label="Fechar janela do Clube Fidelidade"
+          class="w-8 h-8 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold text-sm"
+        >
+          ✕
+        </button>
       </div>
 
-      <div id="resultadoFidelidade" class="hidden p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-2"></div>
+      <div class="flex gap-2">
+        <input
+          type="tel"
+          id="fidelidade-telefone"
+          placeholder="Seu telefone com DDD"
+          class="flex-1 rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2.5 text-sm text-white outline-none focus:border-orange-500"
+        />
+        <button
+          type="button"
+          onclick="consultarFidelidade()"
+          class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition"
+        >
+          Consultar
+        </button>
+      </div>
+
+      <div id="resultado-fidelidade" class="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-zinc-400">Progresso para Corte Grátis:</span>
+          <span id="fid-placar" class="font-black text-orange-400">0 / 5 pontos</span>
+        </div>
+        <div class="w-full h-3 rounded-full bg-zinc-900 overflow-hidden border border-zinc-800">
+          <div id="fid-barra" class="h-full bg-orange-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <p id="fid-mensagem" class="text-xs text-zinc-400">
+          Digite seu telefone acima para conferir sua pontuação acumulada.
+        </p>
+      </div>
     </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- BARRA DE ACESSIBILIDADE FUNCIONAL (WCAG / ARIA)           -->
+  <!-- ========================================================= -->
+  <div
+    id="barra-acessibilidade-santos"
+    role="region"
+    aria-label="Recursos de Acessibilidade"
+    class="fixed bottom-4 left-4 z-50 flex items-center gap-1.5 bg-zinc-900/95 border border-orange-500/50 px-3 py-2 rounded-2xl shadow-xl backdrop-blur-md"
+  >
+    <span class="text-[11px] font-bold uppercase tracking-wider text-orange-400 mr-1">Acessibilidade:</span>
+    <button
+      type="button"
+      onclick="alterarTamanhoFonte(-1)"
+      aria-label="Diminuir tamanho da fonte"
+      title="Diminuir fonte"
+      class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-700 transition"
+    >
+      A-
+    </button>
+    <button
+      type="button"
+      onclick="alterarTamanhoFonte(0)"
+      aria-label="Restaurar tamanho padrão da fonte"
+      title="Fonte padrão"
+      class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-700 transition"
+    >
+      A
+    </button>
+    <button
+      type="button"
+      onclick="alterarTamanhoFonte(1)"
+      aria-label="Aumentar tamanho da fonte"
+      title="Aumentar fonte"
+      class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold border border-zinc-700 transition"
+    >
+      A+
+    </button>
+    <button
+      type="button"
+      id="btn-alto-contraste"
+      onclick="alternarAltoContraste()"
+      aria-pressed="false"
+      aria-label="Alternar modo de alto contraste"
+      class="px-3 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition"
+    >
+      Alto Contraste
+    </button>
   </div>
 
   <script>
-    const WHATSAPP_NUM = "{{ whatsapp_barbearia }}";
-    let servicosExpandidos = false;
-
-    function alternarServicos() {
-      servicosExpandidos = !servicosExpandidos;
-      document.querySelectorAll(".servico-extra").forEach(el => {
-        el.classList.toggle("hidden", !servicosExpandidos);
-      });
-      const btn = document.getElementById("btnExpandirServicos");
-      if (btn) {
-        btn.textContent = servicosExpandidos ? "Mostrar menos serviços ↑" : "Ver todos os serviços ({{ servicos|length }}) ↓";
-      }
-    }
-
-    function mascaraTelefone(el) {
-      let v = el.value.replace(/\D/g, "").slice(0, 11);
-      if (v.length > 6) el.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-      else if (v.length > 2) el.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
-      else el.value = v;
-    }
-
-    function destacarAtalhoSelecionado() {
-      const atual = document.getElementById("horario").value;
-      document.querySelectorAll(".btn-atalho-hora").forEach(btn => {
-        const ativo = btn.dataset.hora === atual && !btn.disabled;
-        btn.classList.toggle("bg-orange-500", ativo);
-        btn.classList.toggle("text-white", ativo);
-        btn.classList.toggle("border-orange-500", ativo);
-        btn.classList.toggle("bg-zinc-950", !ativo);
-      });
-    }
-
-    function selecionarAtalhoHorario(hora) {
-      const select = document.getElementById("horario");
-      const opt = Array.from(select.options).find(o => o.value === hora);
-      if (opt && !opt.disabled) {
-        select.value = hora;
-        destacarAtalhoSelecionado();
-      }
-    }
-
+    // ==========================================
+    // CONTROLE DE MODAIS
+    // ==========================================
     function abrirModalAgendamento(servicoId = null, barbeiroNome = null) {
-      document.getElementById("formAgendamento").classList.remove("hidden");
-      document.getElementById("sucessoAgendamento").classList.add("hidden");
-      document.getElementById("erroAgendamento").classList.add("hidden");
-      if (servicoId) document.getElementById("servico_id").value = servicoId;
-      if (barbeiroNome) document.getElementById("barbeiro").value = barbeiroNome;
+      const modal = document.getElementById("modal-agendamento");
+      modal.classList.remove("hidden");
 
-      const inputData = document.getElementById("data");
+      if (servicoId) {
+        document.getElementById("ag-servico").value = servicoId;
+      }
+      if (barbeiroNome) {
+        document.getElementById("ag-barbeiro").value = barbeiroNome;
+      }
+
+      const inputData = document.getElementById("ag-data");
       const hoje = new Date().toISOString().split("T")[0];
       inputData.min = hoje;
-      if (!inputData.value) inputData.value = hoje;
+      if (!inputData.value) {
+        inputData.value = hoje;
+      }
 
-      atualizarHorarios();
-      document.getElementById("modalAgendamento").classList.remove("hidden");
+      document.getElementById("ag-feedback").classList.add("hidden");
+      carregarHorariosDisponiveis();
     }
 
-    function fecharModalAgendamento() {
-      document.getElementById("modalAgendamento").classList.add("hidden");
+    function abrirModalMeusAgendamentos() {
+      document.getElementById("modal-meus-agendamentos").classList.remove("hidden");
     }
 
     function abrirModalFidelidade() {
-      document.getElementById("resultadoFidelidade").classList.add("hidden");
-      document.getElementById("modalFidelidade").classList.remove("hidden");
+      document.getElementById("modal-fidelidade").classList.remove("hidden");
     }
 
-    function fecharModalFidelidade() {
-      document.getElementById("modalFidelidade").classList.add("hidden");
+    function fecharModal(id) {
+      document.getElementById(id).classList.add("hidden");
     }
 
-    async function consultarPontosFidelidade() {
-      const tel = document.getElementById("telefoneFidelidade").value;
-      const box = document.getElementById("resultadoFidelidade");
+    // ==========================================
+    // HORÁRIOS DISPONÍVEIS & NOVO AGENDAMENTO
+    // ==========================================
+    async function carregarHorariosDisponiveis() {
+      const data = document.getElementById("ag-data").value;
+      const barbeiro = document.getElementById("ag-barbeiro").value;
+      document.getElementById("ag-horario").value = "";
 
-      if (tel.replace(/\D/g, "").length < 10) {
-        box.innerHTML = `<p class="text-xs text-red-400">Digite um telefone válido com DDD.</p>`;
-        box.classList.remove("hidden");
+      if (!data) return;
+
+      try {
+        const resp = await fetch(`/api/horarios-ocupados?data=${encodeURIComponent(data)}&barbeiro=${encodeURIComponent(barbeiro)}`);
+        const json = await resp.json();
+        const ocupados = new Set(json.ocupados || []);
+
+        document.querySelectorAll(".btn-horario").forEach(btn => {
+          const h = btn.dataset.horario;
+          btn.classList.remove("bg-orange-500", "text-white", "border-orange-500");
+
+          if (ocupados.has(h)) {
+            btn.disabled = true;
+            btn.classList.add("opacity-35", "cursor-not-allowed", "line-through", "text-zinc-500");
+          } else {
+            btn.disabled = false;
+            btn.classList.remove("opacity-35", "cursor-not-allowed", "line-through", "text-zinc-500");
+            btn.classList.add("bg-zinc-950", "text-zinc-200");
+          }
+        });
+      } catch (err) {
+        console.error("Erro ao consultar horários:", err);
+      }
+    }
+
+    function selecionarHorario(horario, botao) {
+      document.getElementById("ag-horario").value = horario;
+      document.querySelectorAll(".btn-horario").forEach(b => {
+        b.classList.remove("bg-orange-500", "text-white", "border-orange-500");
+      });
+      botao.classList.add("bg-orange-500", "text-white", "border-orange-500");
+    }
+
+    async function enviarAgendamento(event) {
+      event.preventDefault();
+      const feedback = document.getElementById("ag-feedback");
+      const horario = document.getElementById("ag-horario").value;
+
+      if (!horario) {
+        feedback.textContent = "Selecione um horário disponível antes de confirmar.";
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/30";
+        feedback.classList.remove("hidden");
         return;
       }
 
-      const res = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
-      const json = await res.json();
-      const concluidos = (json.agendamentos || []).filter(a => a.status === "completed").length;
-      const pontos = concluidos % 10;
-      const cortesDisponiveis = Math.floor(concluidos / 10);
-      const faltam = 10 - pontos;
-
-      box.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-xs text-zinc-400 block">Seus Pontos Atuais</span>
-            <span class="text-2xl font-black text-orange-400">${pontos} / 10 pts</span>
-          </div>
-          <div class="text-right">
-            ${cortesDisponiveis > 0
-              ? `<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">${cortesDisponiveis} Corte(s) Grátis!</span>`
-              : `<span class="text-xs text-zinc-400">Faltam <strong class="text-white">${faltam}</strong> ponto(s)</span>`
-            }
-          </div>
-        </div>
-        <p class="text-[11px] text-zinc-500 pt-1 border-t border-zinc-800">
-          Apresente este telefone na barbearia de <strong class="text-zinc-300">segunda a quinta-feira</strong> para resgatar seu corte.
-        </p>
-      `;
-      box.classList.remove("hidden");
-    }
-
-    async function atualizarHorarios() {
-      const data = document.getElementById("data").value;
-      const barbeiro = document.getElementById("barbeiro").value;
-      if (!data) return;
-
-      const res = await fetch(`/api/horarios-ocupados?data=${data}&barbeiro=${encodeURIComponent(barbeiro)}`);
-      const json = await res.json();
-      const ocupados = new Set(json.ocupados || []);
-
-      const select = document.getElementById("horario");
-      let primeiroLivre = null;
-      Array.from(select.options).forEach(opt => {
-        const indisponivel = ocupados.has(opt.value);
-        opt.disabled = indisponivel;
-        opt.textContent = indisponivel ? `${opt.value} (Ocupado)` : opt.value;
-        if (!indisponivel && !primeiroLivre) primeiroLivre = opt.value;
-      });
-
-      document.querySelectorAll(".btn-atalho-hora").forEach(btn => {
-        const indisponivel = ocupados.has(btn.dataset.hora);
-        btn.disabled = indisponivel;
-        btn.classList.toggle("opacity-40", indisponivel);
-        btn.classList.toggle("cursor-not-allowed", indisponivel);
-      });
-
-      if (primeiroLivre && select.selectedOptions[0]?.disabled) {
-        select.value = primeiroLivre;
-      }
-      destacarAtalhoSelecionado();
-    }
-
-    function baixarICS(ag) {
-      const dtStart = ag.data.replace(/-/g, "") + "T" + ag.horario.replace(":", "") + "00";
-      const [h, m] = ag.horario.split(":").map(Number);
-      const fimMin = h * 60 + m + 40;
-      const fh = String(Math.floor(fimMin / 60)).padStart(2, "0");
-      const fm = String(fimMin % 60).padStart(2, "0");
-      const dtEnd = ag.data.replace(/-/g, "") + "T" + fh + fm + "00";
-
-      const conteudo = [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        "BEGIN:VEVENT",
-        `DTSTART:${dtStart}`,
-        `DTEND:${dtEnd}`,
-        `SUMMARY:Barbearia Santos - ${ag.servico_nome} (${ag.barbeiro})`,
-        "LOCATION:Barbearia Santos",
-        "END:VEVENT",
-        "END:VCALENDAR"
-      ].join("\r\n");
-
-      const blob = new Blob([conteudo], { type: "text/calendar;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `agendamento-barbearia-santos-${ag.data}.ics`;
-      a.click();
-    }
-
-    document.getElementById("formAgendamento").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const erroEl = document.getElementById("erroAgendamento");
-      erroEl.classList.add("hidden");
-
       const payload = {
-        servico_id: document.getElementById("servico_id").value,
-        barbeiro: document.getElementById("barbeiro").value,
-        data: document.getElementById("data").value,
-        horario: document.getElementById("horario").value,
-        cliente_nome: document.getElementById("cliente_nome").value,
-        cliente_telefone: document.getElementById("cliente_telefone").value,
+        servico_id: parseInt(document.getElementById("ag-servico").value, 10),
+        barbeiro: document.getElementById("ag-barbeiro").value,
+        data: document.getElementById("ag-data").value,
+        horario: horario,
+        cliente_nome: document.getElementById("ag-nome").value.trim(),
+        cliente_telefone: document.getElementById("ag-telefone").value.trim(),
       };
 
-      const res = await fetch("/api/agendar", {
+      const resp = await fetch("/api/agendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const json = await res.json();
+      const json = await resp.json();
 
-      if (!res.ok) {
-        erroEl.textContent = json.erro || "Erro ao realizar agendamento.";
-        erroEl.classList.remove("hidden");
-        return;
+      if (resp.ok) {
+        feedback.textContent = `${json.mensagem} Profissional: ${json.agendamento.barbeiro} às ${json.agendamento.horario}.`;
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30";
+        feedback.classList.remove("hidden");
+        carregarHorariosDisponiveis();
+      } else {
+        feedback.textContent = json.erro || "Não foi possível concluir o agendamento.";
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/30";
+        feedback.classList.remove("hidden");
       }
-
-      const ag = json.agendamento;
-      const dataBR = ag.data.split("-").reverse().join("/");
-      document.getElementById("resumoSucesso").innerHTML =
-        `<strong>${ag.servico_nome}</strong> com <strong>${ag.barbeiro}</strong><br>Dia <strong>${dataBR}</strong> às <strong>${ag.horario}</strong>`;
-
-      const msg = encodeURIComponent(
-        `Olá! Acabei de agendar na Barbearia Santos:\nCliente: ${ag.cliente_nome}\nServiço: ${ag.servico_nome}\nBarbeiro: ${ag.barbeiro}\nData: ${dataBR} às ${ag.horario}`
-      );
-      document.getElementById("btnWhatsApp").href = `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
-      document.getElementById("btnICS").onclick = () => baixarICS(ag);
-
-      document.getElementById("formAgendamento").classList.add("hidden");
-      document.getElementById("sucessoAgendamento").classList.remove("hidden");
-    });
-
-    function abrirModalMeusAgendamentos() {
-      document.getElementById("modalMeus").classList.remove("hidden");
     }
 
+    // ==========================================
+    // CONSULTA E CANCELAMENTO DO CLIENTE
+    // ==========================================
     async function buscarMeusAgendamentos() {
-      const tel = document.getElementById("buscaTelefone").value;
-      const res = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
-      const json = await res.json();
-      const container = document.getElementById("listaMeusAgendamentos");
+      const tel = document.getElementById("consulta-telefone").value.trim();
+      const container = document.getElementById("lista-meus-agendamentos");
 
-      if (!json.agendamentos.length) {
-        container.innerHTML = `<p class="text-zinc-500 text-center py-4">Nenhum agendamento encontrado para este número.</p>`;
+      const resp = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
+      const json = await resp.json();
+      const lista = json.agendamentos || [];
+
+      if (!lista.length) {
+        container.innerHTML = `<p class="text-xs text-zinc-400 text-center py-6">Nenhum agendamento encontrado para este telefone.</p>`;
         return;
       }
 
-      container.innerHTML = json.agendamentos.map(a => {
-        const dataBR = a.data.split("-").reverse().join("/");
-        const cancelavel = a.status === "confirmed";
+      container.innerHTML = lista.map(a => {
+        const dataBr = a.data.split("-").reverse().join("/");
+        const statusLabel = a.status === "confirmed" ? "Confirmado" : (a.status === "completed" ? "Concluído" : "Cancelado");
+        const statusColor = a.status === "confirmed" ? "text-orange-400" : (a.status === "completed" ? "text-emerald-400" : "text-red-400");
+
         return `
-          <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between gap-2">
+          <div class="p-3.5 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-between gap-3">
             <div>
-              <p class="font-semibold text-white">${a.servico_nome} • <span class="text-orange-400">${a.barbeiro}</span></p>
-              <p class="text-xs text-zinc-400">${dataBR} às ${a.horario} • Status: ${a.status}</p>
+              <span class="font-bold text-sm text-white block">${a.servico_nome}</span>
+              <span class="text-xs text-zinc-400">${dataBr} às ${a.horario} • Barbeiro: ${a.barbeiro}</span>
+              <span class="block text-[11px] font-bold ${statusColor} mt-0.5">${statusLabel}</span>
             </div>
-            ${cancelavel ? `<button onclick="cancelarReserva(${a.id})" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold hover:bg-red-500/30">Cancelar</button>` : ""}
+            ${a.status === "confirmed" ? `
+              <button
+                type="button"
+                onclick="cancelarMeuAgendamento(${a.id})"
+                class="px-3 py-1.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 border border-red-500/30 text-xs font-bold transition"
+              >
+                Cancelar
+              </button>
+            ` : ""}
           </div>
         `;
       }).join("");
     }
 
-    async function cancelarReserva(id) {
-      const tel = document.getElementById("buscaTelefone").value;
-      await fetch(`/api/agendamentos/${id}/cancelar`, {
+    async function cancelarMeuAgendamento(id) {
+      const tel = document.getElementById("consulta-telefone").value.trim();
+      const resp = await fetch(`/api/agendamentos/${id}/cancelar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ telefone: tel }),
       });
-      buscarMeusAgendamentos();
+      if (resp.ok) {
+        buscarMeusAgendamentos();
+      }
     }
+
+    // ==========================================
+    // CLUBE FIDELIDADE (SEGUNDA A QUINTA)
+    // ==========================================
+    async function consultarFidelidade() {
+      const tel = document.getElementById("fidelidade-telefone").value.trim();
+      const resp = await fetch(`/api/meus-agendamentos?telefone=${encodeURIComponent(tel)}`);
+      const json = await resp.json();
+      const lista = json.agendamentos || [];
+
+      const pontos = lista.filter(a => {
+        if (a.status !== "completed") return false;
+        const diaSemana = new Date(a.data + "T12:00:00").getDay(); // 1=Seg, 2=Ter, 3=Qua, 4=Qui
+        return diaSemana >= 1 && diaSemana <= 4;
+      }).length;
+
+      const meta = 5;
+      const pontosCiclo = pontos % meta === 0 && pontos > 0 ? meta : pontos % meta;
+      const percentual = Math.min(100, (pontosCiclo / meta) * 100);
+
+      document.getElementById("fid-placar").textContent = `${pontosCiclo} / ${meta} pontos`;
+      document.getElementById("fid-barra").style.width = `${percentual}%`;
+      document.getElementById("fid-mensagem").textContent =
+        pontos >= meta && pontos % meta === 0
+          ? "Parabéns! Você atingiu 5 pontos e já pode resgatar seu corte cortesia na barbearia."
+          : `Você possui ${pontos} ponto(s) acumulado(s) em atendimentos concluídos de segunda a quinta-feira.`;
+    }
+
+    // ==========================================
+    // ACESSIBILIDADE FUNCIONAL (FONTE & CONTRASTE)
+    // ==========================================
+    let escalaFonte = parseInt(localStorage.getItem("barbearia_escala_fonte") || "100", 10);
+
+    function aplicarAcessibilidade() {
+      document.documentElement.style.fontSize = escalaFonte + "%";
+      const ativo = localStorage.getItem("barbearia_alto_contraste") === "true";
+      document.documentElement.classList.toggle("alto-contraste", ativo);
+      const btn = document.getElementById("btn-alto-contraste");
+      if (btn) {
+        btn.setAttribute("aria-pressed", ativo ? "true" : "false");
+        btn.textContent = ativo ? "Contraste: ON" : "Alto Contraste";
+      }
+    }
+
+    function alterarTamanhoFonte(direcao) {
+      if (direcao === 0) {
+        escalaFonte = 100;
+      } else {
+        escalaFonte = Math.min(130, Math.max(90, escalaFonte + direcao * 10));
+      }
+      localStorage.setItem("barbearia_escala_fonte", escalaFonte);
+      aplicarAcessibilidade();
+    }
+
+    function alternarAltoContraste() {
+      const atual = localStorage.getItem("barbearia_alto_contraste") === "true";
+      localStorage.setItem("barbearia_alto_contraste", (!atual).toString());
+      aplicarAcessibilidade();
+    }
+
+    aplicarAcessibilidade();
   </script>
 </body>
 </html>
