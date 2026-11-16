@@ -1,0 +1,8 @@
+[run]
+source = .
+omit =
+    venv/*
+    tests/*
+    */__pycache__/*
+    app/__init__.py
+    app/routes.py
