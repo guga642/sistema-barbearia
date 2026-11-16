@@ -57,6 +57,7 @@ class Agendamento(db.Model):
 
 
 class Bloqueio(db.Model):
+    """Representa bloqueios de horários, intervalos ou folgas da equipe."""
     __tablename__ = "bloqueios"
     id = db.Column(db.Integer, primary_key=True)
     barbeiro = db.Column(db.String(60), nullable=False)  # Nome do barbeiro ou "Todos"
@@ -64,3 +65,12 @@ class Bloqueio(db.Model):
     horario = db.Column(db.String(15), nullable=False)   # Horário específico ou "Dia inteiro"
     motivo = db.Column(db.String(120), nullable=True)
     criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "barbeiro": self.barbeiro,
+            "data": self.data,
+            "horario": self.horario,
+            "motivo": self.motivo,
+        }
